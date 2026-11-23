@@ -188,7 +188,7 @@ damit ich Rand- und Eckverhalten für beliebig geformte Flächen testen kann.
 **Akzeptanzkriterien:**
 - Editor-Modus pausiert die Simulation während der Bearbeitung (Designannahme D5).
 - Nach dem Loselassen eines Eckpunkts ist der neu berechnete Plan sofort sichtbar.
-- Traförmige Flächen (spitze Ecken, L-Formen) lösen kein Plan-Versagen aus; Recovery greift bei Corner-Locks.
+- Spitzwinklige Flächen (spitze Ecken, L-Formen) lösen kein Plan-Versagen aus; Recovery greift bei Corner-Locks.
 
 ---
 
