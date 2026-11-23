@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Navimow Smart Lawn Mower Real-time Navigation & Interactive Surface Boundary Editor">
+    <title>Navimow - Autonomous Lawn Navigation & Surface Boundary Editor</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: rgba(18, 26, 42, 0.75);
+            --bg-card-hover: rgba(26, 37, 59, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(16, 185, 129, 0.3);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --accent-green: #10b981;
+            --accent-green-glow: rgba(16, 185, 129, 0.25);
+            --accent-blue: #3b82f6;
+            --accent-blue-glow: rgba(59, 130, 246, 0.25);
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-purple: #8b5cf6;
+
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.06) 0%, transparent 45%);
+        }
+
+        /* Top Navigation Header */
+        header {
+            height: 70px;
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 0 15px var(--accent-green-glow);
+        }
+
+        .brand-title {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-badge {
+            font-size: 11px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .device-selector {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            padding: 8px 14px;
+            font-size: 14px;
+            font-family: var(--font-main);
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .device-selector:hover {
+            border-color: var(--accent-green);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-main);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-green-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+            color: white;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-purple:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(139, 92, 246, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--accent-danger), #dc2626);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 18px rgba(239, 68, 68, 0.5);
+        }
+
+        /* App Container Layout */
+        .app-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 320px 1fr 340px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1920px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1400px) {
+            .app-container {
+                grid-template-columns: 280px 1fr 300px;
+                gap: 16px;
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title i {
+            color: var(--accent-green);
+        }
+
+        /* Left Panel - Telemetry & Status */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .status-mowing {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+
+        .status-mowing .pulse-dot {
+            background: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-editing {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(139, 92, 246, 0.4);
+        }
+
+        .status-editing .pulse-dot {
+            background: var(--accent-purple);
+            box-shadow: 0 0 8px var(--accent-purple);
+            animation: pulse 1s infinite;
+        }
+
+        .status-docked {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+        }
+
+        .status-returning {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--accent-warning);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Telemetry Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .metric-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .metric-box:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-value {
+            font-family: var(--font-heading);
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Battery Gauge */
+        .battery-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .battery-fill {
+            height: 100%;
+            width: 84%;
+            background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 5px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        /* Middle Panel - Real-time 2D Canvas Map */
+        .map-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 550px;
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .map-toolbar {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .map-status-overlay {
+            pointer-events: auto;
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .map-actions {
+            pointer-events: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .map-btn {
+            padding: 8px 14px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .map-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .map-btn.active {
+            background: rgba(139, 92, 246, 0.25);
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .map-canvas-container {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #0e1524 0%, #080b12 100%);
+            cursor: crosshair;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Right Panel - Command Console & Log */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 14px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .control-btn i {
+            font-size: 20px;
+            color: var(--accent-green);
+        }
+
+        .control-btn.active {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-green);
+            box-shadow: 0 0 15px var(--accent-green-glow);
+        }
+
+        /* Surface Editor Controls Box */
+        .editor-controls-box {
+            background: rgba(139, 92, 246, 0.08);
+            border: 1px dashed rgba(139, 92, 246, 0.4);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Blade Height Slider */
+        .slider-group {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-green);
+            transition: transform 0.1s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Navigation Joystick Pad */
+        .joystick-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            width: 150px;
+            margin: 0 auto;
+        }
+
+        .joy-btn {
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.15s ease;
+        }
+
+        .joy-btn:hover {
+            background: var(--accent-green);
+            color: white;
+            border-color: var(--accent-green);
+        }
+
+        .joy-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Activity Log Feed */
+        .log-feed {
+            height: 140px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+
+        .log-feed::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .log-feed::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+        }
+
+        .log-item {
+            font-size: 12px;
+            padding: 8px 10px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .log-time {
+            color: var(--text-muted);
+            font-size: 11px;
+        }
+
+        /* Settings & Save Surface Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            width: 520px;
+            background: #0d121e;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 10px 14px;
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-green);
+        }
+
+        .code-preview {
+            background: #060911;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #a7f3d0;
+            max-height: 180px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-vector-square"></i>
+            </div>
+            <div>
+                <span class="brand-title">Navimow Surface & Navigation Studio</span>
+            </div>
+            <span class="brand-badge" id="headerModeBadge"><i class="fa-solid fa-satellite-dish"></i> RTK Live</span>
+        </div>
+
+        <div class="header-controls">
+            <button class="btn btn-purple" id="btnEditMode" onclick="toggleEditSurfaceMode()">
+                <i class="fa-solid fa-draw-polygon"></i> <span id="editModeText">Edit Lawn Surface</span>
+            </button>
+            <button class="btn btn-primary" onclick="openSaveModal()">
+                <i class="fa-solid fa-floppy-disk"></i> Save Boundary & Variables
+            </button>
+            <select class="device-selector" id="deviceSelect" onchange="switchDevice(this.value)">
+                <option value="NAV-H3000E-01">Navimow H3000E (Backyard Lawn)</option>
+                <option value="NAV-i105N-02">Navimow i105N (Front Garden)</option>
+            </select>
+            <button class="btn btn-secondary" onclick="openSettingsModal()">
+                <i class="fa-solid fa-gear"></i> Settings
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        
+        <!-- Left Panel: Telemetry & Surface Geometry Stats -->
+        <div class="glass-card">
+            <div class="card-header">
+                <span class="card-title"><i class="fa-solid fa-chart-pie"></i> Surface Metrics & Stats</span>
+                <span class="status-badge status-mowing" id="statusBadge">
+                    <span class="pulse-dot"></span> <span id="statusText">MOWING</span>
+                </span>
+            </div>
+
+            <!-- Dynamic Lawn Surface Area Metric -->
+            <div class="metric-box" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">
+                <div class="metric-label" style="color: var(--accent-green); font-weight: 600;">
+                    <i class="fa-solid fa-ruler-combined"></i> Lawn Surface Area (Variable)
+                </div>
+                <div class="metric-value" id="calcAreaValue" style="color: var(--accent-green); font-size: 26px;">520.0 m²</div>
+                <div class="metric-sub" id="calcVerticesCount">Boundary Vertices: 6 Points</div>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label"><i class="fa-solid fa-battery-three-quarters"></i> Battery</div>
+                    <div class="metric-value" id="batteryValue">84%</div>
+                    <div class="battery-bar-container">
+                        <div class="battery-fill" id="batteryFill" style="width: 84%;"></div>
+                    </div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label"><i class="fa-solid fa-tachometer-alt"></i> Speed</div>
+                    <div class="metric-value" id="speedValue">0.5 m/s</div>
+                    <div class="metric-sub">Target: 0.6 m/s</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label"><i class="fa-solid fa-compass"></i> Heading</div>
+                    <div class="metric-value" id="headingValue">142°</div>
+                    <div class="metric-sub">SE Direction</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label"><i class="fa-solid fa-percent"></i> Mowed %</div>
+                    <div class="metric-value" id="progressValue">67%</div>
+                    <div class="metric-sub">ETA: 22 mins</div>
+                </div>
+            </div>
+
+            <!-- RTK GPS & Satellite Locks -->
+            <div class="metric-box">
+                <div class="metric-label">
+                    <i class="fa-solid fa-satellite" style="color: var(--accent-blue);"></i> RTK Satellite Lock
+                </div>
+                <div class="metric-value" style="font-size: 18px;" id="satellitesValue">28 Satellites (FIXED)</div>
+                <div class="metric-sub">Precision: ±1.8 cm</div>
+            </div>
+
+            <!-- Hardware Specs -->
+            <div style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid var(--border-color);">
+                <div><strong>Active Boundary:</strong> <span id="boundaryNameTag">Backyard Zone 1</span></div>
+                <div><strong>Saved Storage:</strong> <span id="savedStorageTag" style="color: var(--accent-green);">Loaded from LocalStorage</span></div>
+            </div>
+        </div>
+
+        <!-- Middle Panel: Real-time 2D Canvas Map & Interactive Surface Editor -->
+        <div class="glass-card map-card">
+            <div class="map-toolbar">
+                <div class="map-status-overlay">
+                    <span><i class="fa-solid fa-location-crosshairs" style="color: var(--accent-green);"></i> Coordinates: <strong id="coordText">52.3676° N, 4.9041° E</strong></span>
+                </div>
+                <div class="map-actions">
+                    <button class="map-btn" id="btnMapEdit" onclick="toggleEditSurfaceMode()">
+                        <i class="fa-solid fa-up-down-left-right"></i> Drag Points Mode
+                    </button>
+                    <button class="map-btn" onclick="addBoundaryVertex()">
+                        <i class="fa-solid fa-plus"></i> Add Point
+                    </button>
+                    <button class="map-btn" onclick="removeSelectedVertex()" style="color: var(--accent-danger);">
+                        <i class="fa-solid fa-trash"></i> Delete Point
+                    </button>
+                    <button class="map-btn" onclick="resetBoundaryToDefault()" title="Reset Boundary">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="map-canvas-container" id="mapContainer">
+                <canvas id="lawnCanvas"></canvas>
+                
+                <div class="map-legend">
+                    <div class="legend-item"><div class="legend-color" style="background: #15803d;"></div> Lawn Surface</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> Mowed Path</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #8b5cf6;"></div> Vertex Handle</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> No-Go Obstacle</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Commands & Surface Controls -->
+        <div class="glass-card">
+            <div class="card-header">
+                <span class="card-title"><i class="fa-solid fa-sliders"></i> Boundary & Drive Controls</span>
+            </div>
+
+            <!-- Surface Editor Controls Box -->
+            <div class="editor-controls-box">
+                <div style="font-size: 13px; font-weight: 600; color: var(--accent-purple); display: flex; align-items: center; justify-content: space-between;">
+                    <span><i class="fa-solid fa-pen-ruler"></i> Surface Boundary Controls</span>
+                    <span style="font-size: 11px; background: rgba(139, 92, 246, 0.2); padding: 2px 6px; border-radius: 4px;" id="editorStateLabel">View Mode</span>
+                </div>
+                <div style="font-size: 12px; color: var(--text-secondary);">
+                    Drag purple vertex circles on map to edit perimeter. Click <strong>Add Point</strong> to expand lawn surface.
+                </div>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-purple" style="flex: 1; font-size: 12px; padding: 6px 10px;" onclick="openSaveModal()">
+                        <i class="fa-solid fa-code"></i> View Config Array
+                    </button>
+                    <button class="btn btn-secondary" style="font-size: 12px; padding: 6px 10px;" onclick="downloadSurfaceJSON()">
+                        <i class="fa-solid fa-download"></i> JSON
+                    </button>
+                </div>
+            </div>
+
+            <!-- Primary Navigation Command Actions -->
+            <div class="controls-grid">
+                <button class="control-btn active" id="btnStart" onclick="sendMowerCommand('start')">
+                    <i class="fa-solid fa-play"></i> Start Mowing
+                </button>
+                <button class="control-btn" id="btnPause" onclick="sendMowerCommand('pause')">
+                    <i class="fa-solid fa-pause"></i> Pause
+                </button>
+                <button class="control-btn" id="btnDock" onclick="sendMowerCommand('dock')">
+                    <i class="fa-solid fa-house-chimney"></i> Return Dock
+                </button>
+                <button class="control-btn" id="btnResume" onclick="sendMowerCommand('resume')">
+                    <i class="fa-solid fa-forward"></i> Resume
+                </button>
+            </div>
+
+            <!-- Blade Height Adjustment -->
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span><i class="fa-solid fa-sliders"></i> Blade Height</span>
+                    <strong id="bladeValue" style="color: var(--accent-green);">45 mm</strong>
+                </div>
+                <input type="range" id="bladeSlider" min="30" max="60" value="45" oninput="updateBladeHeight(this.value)">
+            </div>
+
+            <!-- Manual Remote Control Joystick -->
+            <div style="text-align: center; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px;">
+                    <i class="fa-solid fa-hand-pointer"></i> Manual Remote Drive
+                </div>
+                <div class="joystick-container">
+                    <div></div>
+                    <button class="joy-btn" onclick="manualDrive('up')"><i class="fa-solid fa-chevron-up"></i></button>
+                    <div></div>
+                    <button class="joy-btn" onclick="manualDrive('left')"><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="joy-btn" onclick="manualDrive('stop')"><i class="fa-solid fa-stop"></i></button>
+                    <button class="joy-btn" onclick="manualDrive('right')"><i class="fa-solid fa-chevron-right"></i></button>
+                    <div></div>
+                    <button class="joy-btn" onclick="manualDrive('down')"><i class="fa-solid fa-chevron-down"></i></button>
+                    <div></div>
+                </div>
+            </div>
+
+            <!-- Live Activity Log -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 12px;">
+                <div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span><i class="fa-solid fa-list-ul"></i> Event Log</span>
+                    <span style="font-size: 10px; color: var(--accent-green);"><i class="fa-solid fa-circle" style="font-size: 6px;"></i> Live</span>
+                </div>
+                <div class="log-feed" id="logFeed">
+                    <!-- Dynamic logs inserted here -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Save Surface & Code Export Modal -->
+    <div class="modal-backdrop" id="saveModal">
+        <div class="modal-card">
+            <div class="card-header">
+                <span class="card-title"><i class="fa-solid fa-floppy-disk"></i> Surface Boundary & Variables Export</span>
+                <button class="map-btn" onclick="closeSaveModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div style="font-size: 13px; color: var(--text-secondary);">
+                The surface area is calculated dynamically as a variable: <strong id="modalAreaText" style="color: var(--accent-green);">520.0 m²</strong>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Surface Name</label>
+                <input type="text" class="form-input" id="surfaceNameInput" value="Backyard Main Lawn Surface">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Python SDK Variable Array Code</label>
+                <div class="code-preview" id="pythonCodePreview"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">JSON Boundary Payload</label>
+                <div class="code-preview" id="jsonCodePreview"></div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" onclick="closeSaveModal()">Cancel</button>
+                <button class="btn btn-purple" onclick="downloadSurfaceJSON()"><i class="fa-solid fa-download"></i> Download JSON</button>
+                <button class="btn btn-primary" onclick="saveSurfaceToLocalStorage()"><i class="fa-solid fa-check"></i> Save to LocalStorage</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Settings Modal -->
+    <div class="modal-backdrop" id="settingsModal">
+        <div class="modal-card">
+            <div class="card-header">
+                <span class="card-title"><i class="fa-solid fa-sliders"></i> API Connection Settings</span>
+                <button class="map-btn" onclick="closeSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">API Base URL</label>
+                <input type="text" class="form-input" id="cfgApiUrl" value="https://api.navimow.com">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">OAuth Access Token</label>
+                <input type="password" class="form-input" id="cfgToken" value="sample_bearer_token_xyz">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">MQTT WSS Broker URL</label>
+                <input type="text" class="form-input" id="cfgMqttUrl" value="wss://mqtt.navimow.com:443/mqtt">
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px;">
+                <button class="btn btn-secondary" onclick="closeSettingsModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSettings()">Save & Reconnect</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Navigation & Interactive Surface Editor Logic -->
+    <script>
+        // State variables
+        let isSimulating = true;
+        let isEditingSurface = false;
+        let showGrid = true;
+        let mowerState = 'mowing';
+        let bladeHeight = 45;
+        let batteryPct = 84;
+        let mowedAreaCount = 348;
+        let calculatedLawnAreaM2 = 520.0;
+
+        // Selection & Drag state
+        let selectedVertexIndex = -1;
+        let isDraggingVertex = false;
+        let dragOffX = 0;
+        let dragOffY = 0;
+
+        // Canvas Setup
+        const canvas = document.getElementById('lawnCanvas');
+        const ctx = canvas.getContext('2d');
+        let canvasWidth, canvasHeight;
+
+        // Lawn polygon coordinates (Screen X/Y)
+        let lawnBoundary = [];
+        let defaultLawnBoundary = [];
+        let noGoZones = [];
+        let dockStation = { x: 120, y: 380 };
+
+        // Mower state object
+        let mower = {
+            x: 250,
+            y: 200,
+            angle: 45,
+            speed: 1.2,
+            targetX: 250,
+            targetY: 200,
+            pathHistory: []
+        };
+
+        // Initialize Canvas Resize & Default Boundary
+        function resizeCanvas() {
+            const container = document.getElementById('mapContainer');
+            canvasWidth = container.clientWidth;
+            canvasHeight = container.clientHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            const padX = canvasWidth * 0.12;
+            const padY = canvasHeight * 0.12;
+            const w = canvasWidth - padX * 2;
+            const h = canvasHeight - padY * 2;
+
+            defaultLawnBoundary = [
+                { x: padX, y: padY },
+                { x: padX + w * 0.85, y: padY },
+                { x: padX + w, y: padY + h * 0.35 },
+                { x: padX + w * 0.9, y: padY + h },
+                { x: padX + w * 0.15, y: padY + h * 0.95 },
+                { x: padX, y: padY + h * 0.6 }
+            ];
+
+            // Load saved boundary from localStorage if available
+            const savedData = localStorage.getItem('navimow_saved_surface');
+            if (savedData && lawnBoundary.length === 0) {
+                try {
+                    const parsed = JSON.parse(savedData);
+                    lawnBoundary = parsed.boundary || defaultLawnBoundary;
+                    addLogEntry('Loaded saved lawn surface from LocalStorage');
+                } catch(e) {
+                    lawnBoundary = defaultLawnBoundary;
+                }
+            } else if (lawnBoundary.length === 0) {
+                lawnBoundary = JSON.parse(JSON.stringify(defaultLawnBoundary));
+            }
+
+            noGoZones = [
+                { cx: padX + w * 0.55, cy: padY + h * 0.4, r: 40, label: 'Swimming Pool' },
+                { cx: padX + w * 0.25, cy: padY + h * 0.65, r: 25, label: 'Tree / Flowerbed' }
+            ];
+
+            dockStation = { x: padX + 25, y: padY + h * 0.85 };
+            if (mower.pathHistory.length === 0) {
+                mower.x = padX + 100;
+                mower.y = padY + 100;
+                mower.targetX = mower.x;
+                mower.targetY = mower.y;
+            }
+
+            recalculateSurfaceArea();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        // Shoelace Formula to calculate Polygon Surface Area (in m²)
+        function recalculateSurfaceArea() {
+            if (lawnBoundary.length < 3) {
+                calculatedLawnAreaM2 = 0;
+                return;
+            }
+            let area = 0;
+            const n = lawnBoundary.length;
+            for (let i = 0; i < n; i++) {
+                const j = (i + 1) % n;
+                area += lawnBoundary[i].x * lawnBoundary[j].y;
+                area -= lawnBoundary[j].x * lawnBoundary[i].y;
+            }
+            area = Math.abs(area) / 2.0;
+
+            // Scale factor conversion: Assume canvas 1 px² = ~0.0035 m²
+            calculatedLawnAreaM2 = (area * 0.0035).toFixed(1);
+
+            document.getElementById('calcAreaValue').innerText = `${calculatedLawnAreaM2} m²`;
+            document.getElementById('calcVerticesCount').innerText = `Boundary Vertices: ${n} Points`;
+        }
+
+        // Toggle Surface Editor Mode
+        function toggleEditSurfaceMode() {
+            isEditingSurface = !isEditingSurface;
+            const btn = document.getElementById('btnEditMode');
+            const btnMap = document.getElementById('btnMapEdit');
+            const txt = document.getElementById('editModeText');
+            const badge = document.getElementById('statusBadge');
+            const label = document.getElementById('editorStateLabel');
+
+            if (isEditingSurface) {
+                btn.classList.add('btn-purple');
+                btnMap.classList.add('active');
+                txt.innerText = 'Exit Editor Mode';
+                label.innerText = 'Editing Active';
+                label.style.background = 'rgba(139, 92, 246, 0.3)';
+                badge.className = 'status-badge status-editing';
+                document.getElementById('statusText').innerText = 'SURFACE EDITING';
+                addLogEntry('Entered Surface Boundary Editor Mode. Drag purple circles to reshape area.');
+            } else {
+                btnMap.classList.remove('active');
+                txt.innerText = 'Edit Lawn Surface';
+                label.innerText = 'View Mode';
+                label.style.background = 'rgba(255, 255, 255, 0.1)';
+                updateStatusUI();
+                addLogEntry('Exited Surface Boundary Editor Mode');
+            }
+        }
+
+        // Add a new boundary vertex point
+        function addBoundaryVertex() {
+            if (lawnBoundary.length === 0) return;
+            // Add a point halfway between last and first vertex
+            const last = lawnBoundary[lawnBoundary.length - 1];
+            const first = lawnBoundary[0];
+            const newPt = {
+                x: (last.x + first.x) / 2 + 20,
+                y: (last.y + first.y) / 2 + 20
+            };
+            lawnBoundary.push(newPt);
+            selectedVertexIndex = lawnBoundary.length - 1;
+            recalculateSurfaceArea();
+            addLogEntry(`Added new vertex point #${lawnBoundary.length}`);
+        }
+
+        // Remove selected vertex
+        function removeSelectedVertex() {
+            if (lawnBoundary.length <= 3) {
+                alert('A lawn polygon must have at least 3 boundary vertices.');
+                return;
+            }
+            if (selectedVertexIndex >= 0 && selectedVertexIndex < lawnBoundary.length) {
+                lawnBoundary.splice(selectedVertexIndex, 1);
+                selectedVertexIndex = -1;
+                recalculateSurfaceArea();
+                addLogEntry('Deleted selected vertex point');
+            } else {
+                lawnBoundary.pop();
+                recalculateSurfaceArea();
+                addLogEntry('Removed last vertex point');
+            }
+        }
+
+        // Reset boundary to default
+        function resetBoundaryToDefault() {
+            lawnBoundary = JSON.parse(JSON.stringify(defaultLawnBoundary));
+            selectedVertexIndex = -1;
+            recalculateSurfaceArea();
+            localStorage.removeItem('navimow_saved_surface');
+            document.getElementById('savedStorageTag').innerText = 'Reset to Default';
+            document.getElementById('savedStorageTag').style.color = 'var(--text-muted)';
+            addLogEntry('Reset boundary surface to default layout');
+        }
+
+        // Mouse Drag & Interaction for Editing Lawn Handles
+        canvas.addEventListener('mousedown', (e) => {
+            if (!isEditingSurface) return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            // Check if mouse clicked on any vertex circle handle
+            const handleRadius = 12;
+            selectedVertexIndex = -1;
+
+            for (let i = 0; i < lawnBoundary.length; i++) {
+                const dist = Math.hypot(mouseX - lawnBoundary[i].x, mouseY - lawnBoundary[i].y);
+                if (dist <= handleRadius) {
+                    selectedVertexIndex = i;
+                    isDraggingVertex = true;
+                    dragOffX = mouseX - lawnBoundary[i].x;
+                    dragOffY = mouseY - lawnBoundary[i].y;
+                    break;
+                }
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            if (!isEditingSurface || !isDraggingVertex || selectedVertexIndex === -1) return;
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            lawnBoundary[selectedVertexIndex].x = mouseX - dragOffX;
+            lawnBoundary[selectedVertexIndex].y = mouseY - dragOffY;
+            recalculateSurfaceArea();
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isDraggingVertex) {
+                isDraggingVertex = false;
+                addLogEntry(`Updated vertex #${selectedVertexIndex + 1} position. Lawn area: ${calculatedLawnAreaM2} m²`);
+            }
+        });
+
+        // Simulation Autonomous Path Generator
+        function updateMowerPhysics() {
+            if (!isSimulating || isEditingSurface || mowerState === 'paused' || mowerState === 'docked') return;
+
+            if (mowerState === 'returning') {
+                const dx = dockStation.x - mower.x;
+                const dy = dockStation.y - mower.y;
+                const dist = Math.hypot(dx, dy);
+
+                if (dist < 5) {
+                    mowerState = 'docked';
+                    updateStatusUI();
+                    addLogEntry('Navimow docked at charging station');
+                    return;
+                }
+
+                mower.angle = Math.atan2(dy, dx) * (180 / Math.PI);
+                mower.x += Math.cos(mower.angle * Math.PI / 180) * 1.5;
+                mower.y += Math.sin(mower.angle * Math.PI / 180) * 1.5;
+                mower.pathHistory.push({ x: mower.x, y: mower.y });
+                return;
+            }
+
+            const step = 1.2;
+            const nextX = mower.x + Math.cos(mower.angle * Math.PI / 180) * step;
+            const nextY = mower.y + Math.sin(mower.angle * Math.PI / 180) * step;
+
+            if (pointInPolygon({ x: nextX, y: nextY }, lawnBoundary) && !hitsObstacle(nextX, nextY)) {
+                mower.x = nextX;
+                mower.y = nextY;
+                mower.pathHistory.push({ x: mower.x, y: mower.y });
+                
+                mowedAreaCount += 0.04;
+                const progress = Math.min(100, Math.floor((mowedAreaCount / Math.max(1, calculatedLawnAreaM2)) * 100));
+                document.getElementById('progressValue').innerText = `${progress}%`;
+            } else {
+                mower.angle = (mower.angle + 125) % 360;
+            }
+
+            if (Math.random() < 0.05 && batteryPct > 5) {
+                batteryPct -= 0.1;
+                document.getElementById('batteryValue').innerText = `${Math.floor(batteryPct)}%`;
+                document.getElementById('batteryFill').style.width = `${Math.floor(batteryPct)}%`;
+            }
+        }
+
+        function pointInPolygon(pt, poly) {
+            let inside = false;
+            for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+                const xi = poly[i].x, yi = poly[i].y;
+                const xj = poly[j].x, yj = poly[j].y;
+                const intersect = ((yi > pt.y) !== (yj > pt.y)) &&
+                    (pt.x < (xj - xi) * (pt.y - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        function hitsObstacle(x, y) {
+            return noGoZones.some(o => Math.hypot(x - o.cx, y - o.cy) < o.r + 10);
+        }
+
+        // Render Canvas Frame
+        function drawMap() {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            // 1. Draw Grid Lines
+            if (showGrid) {
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+                ctx.lineWidth = 1;
+                const gridSize = 40;
+                for (let x = 0; x < canvasWidth; x += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, canvasHeight);
+                    ctx.stroke();
+                }
+                for (let y = 0; y < canvasHeight; y += gridSize) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvasWidth, y);
+                    ctx.stroke();
+                }
+            }
+
+            // 2. Draw Unmowed Lawn Polygon
+            if (lawnBoundary.length > 0) {
+                ctx.beginPath();
+                ctx.moveTo(lawnBoundary[0].x, lawnBoundary[0].y);
+                for (let i = 1; i < lawnBoundary.length; i++) {
+                    ctx.lineTo(lawnBoundary[i].x, lawnBoundary[i].y);
+                }
+                ctx.closePath();
+                ctx.fillStyle = isEditingSurface ? 'rgba(21, 56, 30, 0.85)' : '#0f381c';
+                ctx.fill();
+                ctx.strokeStyle = isEditingSurface ? '#8b5cf6' : '#10b981';
+                ctx.lineWidth = isEditingSurface ? 3 : 2;
+                ctx.stroke();
+            }
+
+            // 3. Draw Mowed Path Trail
+            if (mower.pathHistory.length > 1) {
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.65)';
+                ctx.lineWidth = 14;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(mower.pathHistory[0].x, mower.pathHistory[0].y);
+                for (let i = 1; i < mower.pathHistory.length; i++) {
+                    ctx.lineTo(mower.pathHistory[i].x, mower.pathHistory[i].y);
+                }
+                ctx.stroke();
+            }
+
+            // 4. Draw Interactive Surface Editor Handles if Editing Mode Active
+            if (isEditingSurface) {
+                for (let i = 0; i < lawnBoundary.length; i++) {
+                    const pt = lawnBoundary[i];
+                    const isSel = (i === selectedVertexIndex);
+
+                    // Outer Handle Ring
+                    ctx.beginPath();
+                    ctx.arc(pt.x, pt.y, isSel ? 14 : 10, 0, Math.PI * 2);
+                    ctx.fillStyle = isSel ? '#c084fc' : '#8b5cf6';
+                    ctx.fill();
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Point Index Label
+                    ctx.fillStyle = '#ffffff';
+                    ctx.font = '10px Inter';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(`${i + 1}`, pt.x, pt.y + 3);
+                }
+            }
+
+            // 5. Draw No-Go Obstacle Zones
+            noGoZones.forEach(zone => {
+                ctx.beginPath();
+                ctx.arc(zone.cx, zone.cy, zone.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+                ctx.fill();
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = '11px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText(zone.label, zone.cx, zone.cy + 4);
+            });
+
+            // 6. Draw Charging Dock Station
+            ctx.beginPath();
+            ctx.arc(dockStation.x, dockStation.y, 14, 0, Math.PI * 2);
+            ctx.fillStyle = '#3b82f6';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '10px FontAwesome';
+            ctx.fillText('\uf0e7', dockStation.x, dockStation.y + 3);
+
+            // 7. Draw Navimow Mower Vehicle
+            ctx.save();
+            ctx.translate(mower.x, mower.y);
+            ctx.rotate(mower.angle * Math.PI / 180);
+
+            ctx.beginPath();
+            ctx.arc(0, 0, 16, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.3)';
+            ctx.fill();
+
+            ctx.fillStyle = '#1e293b';
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(-12, -10, 24, 20, 6);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#10b981';
+            ctx.beginPath();
+            ctx.moveTo(12, 0);
+            ctx.lineTo(4, -6);
+            ctx.lineTo(4, 6);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+
+            document.getElementById('headingValue').innerText = `${Math.floor(mower.angle)}°`;
+            const lat = (52.3676 + (mower.y - 200) * 0.00001).toFixed(4);
+            const lng = (4.9041 + (mower.x - 250) * 0.00001).toFixed(4);
+            document.getElementById('coordText').innerText = `${lat}° N, ${lng}° E`;
+        }
+
+        // Animation Loop
+        function animate() {
+            updateMowerPhysics();
+            drawMap();
+            requestAnimationFrame(animate);
+        }
+
+        // UI Controls & Interaction
+        function sendMowerCommand(cmd) {
+            const buttons = ['btnStart', 'btnPause', 'btnDock', 'btnResume'];
+            buttons.forEach(id => document.getElementById(id).classList.remove('active'));
+
+            if (cmd === 'start') {
+                mowerState = 'mowing';
+                document.getElementById('btnStart').classList.add('active');
+                addLogEntry('Command sent: Start Mowing session');
+            } else if (cmd === 'pause') {
+                mowerState = 'paused';
+                document.getElementById('btnPause').classList.add('active');
+                addLogEntry('Command sent: Pause navigation');
+            } else if (cmd === 'dock') {
+                mowerState = 'returning';
+                document.getElementById('btnDock').classList.add('active');
+                addLogEntry('Command sent: Return to charging dock');
+            } else if (cmd === 'resume') {
+                mowerState = 'mowing';
+                document.getElementById('btnResume').classList.add('active');
+                addLogEntry('Command sent: Resume operation');
+            }
+
+            updateStatusUI();
+        }
+
+        function updateStatusUI() {
+            if (isEditingSurface) return;
+            const badge = document.getElementById('statusBadge');
+            const text = document.getElementById('statusText');
+
+            badge.className = 'status-badge';
+            if (mowerState === 'mowing') {
+                badge.classList.add('status-mowing');
+                text.innerText = 'MOWING';
+            } else if (mowerState === 'returning') {
+                badge.classList.add('status-returning');
+                text.innerText = 'RETURNING';
+            } else if (mowerState === 'docked') {
+                badge.classList.add('status-docked');
+                text.innerText = 'DOCKED';
+            } else if (mowerState === 'paused') {
+                badge.classList.add('status-returning');
+                text.innerText = 'PAUSED';
+            }
+        }
+
+        function manualDrive(dir) {
+            if (dir === 'up') mower.angle = 270;
+            if (dir === 'down') mower.angle = 90;
+            if (dir === 'left') mower.angle = 180;
+            if (dir === 'right') mower.angle = 0;
+            if (dir === 'stop') {
+                mowerState = 'paused';
+                updateStatusUI();
+                return;
+            }
+            mowerState = 'mowing';
+            updateStatusUI();
+            addLogEntry(`Manual override: Drive ${dir.toUpperCase()}`);
+        }
+
+        function updateBladeHeight(val) {
+            bladeHeight = val;
+            document.getElementById('bladeValue').innerText = `${val} mm`;
+            addLogEntry(`Adjusted cutting blade height to ${val}mm`);
+        }
+
+        function addLogEntry(message) {
+            const feed = document.getElementById('logFeed');
+            const now = new Date().toLocaleTimeString();
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.innerHTML = `<span>${message}</span> <span class="log-time">${now}</span>`;
+            feed.prepend(item);
+        }
+
+        function openSaveModal() {
+            document.getElementById('modalAreaText').innerText = `${calculatedLawnAreaM2} m²`;
+
+            // Format Python SDK code snippet
+            const pyCoords = lawnBoundary.map(p => `    {"x": ${Math.round(p.x)}, "y": ${Math.round(p.y)}}`).join(",\n");
+            const pyCode = `# Navimow Surface Boundary & Area Config\nLAWN_SURFACE_AREA_M2 = ${calculatedLawnAreaM2}\nLAWN_BOUNDARY_VERTICES = [\n${pyCoords}\n]`;
+            document.getElementById('pythonCodePreview').innerText = pyCode;
+
+            // Format JSON
+            const jsonPayload = {
+                surface_name: document.getElementById('surfaceNameInput').value,
+                surface_area_m2: parseFloat(calculatedLawnAreaM2),
+                vertices_count: lawnBoundary.length,
+                boundary: lawnBoundary
+            };
+            document.getElementById('jsonCodePreview').innerText = JSON.stringify(jsonPayload, null, 2);
+
+            document.getElementById('saveModal').classList.add('active');
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('active');
+        }
+
+        function saveSurfaceToLocalStorage() {
+            const name = document.getElementById('surfaceNameInput').value;
+            const data = {
+                name: name,
+                area_m2: parseFloat(calculatedLawnAreaM2),
+                boundary: lawnBoundary
+            };
+            localStorage.setItem('navimow_saved_surface', JSON.stringify(data));
+            document.getElementById('savedStorageTag').innerText = 'Saved in LocalStorage';
+            document.getElementById('savedStorageTag').style.color = 'var(--accent-green)';
+            closeSaveModal();
+            addLogEntry(`Saved surface boundary '${name}' (${calculatedLawnAreaM2} m²) to LocalStorage`);
+        }
+
+        function downloadSurfaceJSON() {
+            const name = document.getElementById('surfaceNameInput').value;
+            const data = {
+                name: name,
+                surface_area_m2: parseFloat(calculatedLawnAreaM2),
+                boundary: lawnBoundary
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `navimow_lawn_surface_${calculatedLawnAreaM2}m2.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            addLogEntry('Downloaded surface configuration JSON file');
+        }
+
+        function openSettingsModal() {
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        function closeSettingsModal() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        function saveSettings() {
+            const url = document.getElementById('cfgApiUrl').value;
+            closeSettingsModal();
+            addLogEntry(`API settings saved. Base URL: ${url}`);
+        }
+
+        function switchDevice(val) {
+            addLogEntry(`Switched active device to ${val}`);
+        }
+
+        // Initialize App
+        window.onload = () => {
+            resizeCanvas();
+            addLogEntry('Navimow Surface Studio & Telemetry Dashboard initialized');
+            addLogEntry('RTK GPS Satellite Lock Established (28 Satellites)');
+            animate();
+        };
+    </script>
+</body>
+</html>

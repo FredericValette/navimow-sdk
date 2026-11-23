@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Navimow Smart Lawn Mower - Multi-Layer Navigation & Nazca Lines Geoglyphs Studio">
+    <title>Navimow - Multi-Layer Surface & Nazca Lines Geoglyphs Studio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-dark: #090d16;
+            --bg-card: rgba(18, 26, 42, 0.75);
+            --bg-card-hover: rgba(26, 37, 59, 0.85);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(16, 185, 129, 0.3);
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+
+            --accent-green: #10b981;
+            --accent-green-glow: rgba(16, 185, 129, 0.25);
+            --accent-blue: #3b82f6;
+            --accent-blue-glow: rgba(59, 130, 246, 0.25);
+            --accent-warning: #f59e0b;
+            --accent-danger: #ef4444;
+            --accent-purple: #8b5cf6;
+            --accent-eco: #eab308;
+            --accent-eco-glow: rgba(234, 179, 8, 0.3);
+
+            --font-main: 'Inter', sans-serif;
+            --font-heading: 'Outfit', sans-serif;
+
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(234, 179, 8, 0.06) 0%, transparent 45%);
+        }
+
+        /* Top Navigation Header */
+        header {
+            height: 70px;
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-eco));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 0 15px var(--accent-green-glow);
+        }
+
+        .brand-title {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffffff, #cbd5e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-badge {
+            font-size: 11px;
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--accent-eco);
+            padding: 2px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: var(--radius-md);
+            font-family: var(--font-main);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-green), #059669);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-green-glow);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-purple {
+            background: linear-gradient(135deg, var(--accent-purple), #7c3aed);
+            color: white;
+        }
+
+        .btn-eco {
+            background: linear-gradient(135deg, var(--accent-eco), #d97706);
+            color: #090d16;
+            font-weight: 700;
+        }
+
+        /* App Container Layout */
+        .app-container {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 340px 1fr 350px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1920px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        @media (max-width: 1400px) {
+            .app-container {
+                grid-template-columns: 300px 1fr 310px;
+                gap: 16px;
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Glass Cards */
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title i {
+            color: var(--accent-green);
+        }
+
+        /* Pattern Selector Buttons */
+        .pattern-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .pattern-btn {
+            padding: 10px 8px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+
+        .pattern-btn:hover {
+            background: rgba(234, 179, 8, 0.1);
+            border-color: rgba(234, 179, 8, 0.4);
+            color: var(--text-primary);
+        }
+
+        .pattern-btn.active {
+            background: rgba(234, 179, 8, 0.2);
+            border-color: var(--accent-eco);
+            color: var(--accent-eco);
+            box-shadow: 0 0 12px var(--accent-eco-glow);
+        }
+
+        .pattern-btn i {
+            font-size: 18px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .status-eco {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--accent-eco);
+            border: 1px solid rgba(234, 179, 8, 0.4);
+        }
+
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: currentColor;
+            box-shadow: 0 0 8px currentColor;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+
+        /* Telemetry Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .metric-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .metric-value {
+            font-family: var(--font-heading);
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Middle Panel Map */
+        .map-card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 580px;
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .map-toolbar {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            right: 16px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .map-status-overlay {
+            pointer-events: auto;
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .map-actions {
+            pointer-events: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .map-btn {
+            padding: 8px 14px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .map-btn.active {
+            background: rgba(234, 179, 8, 0.25);
+            border-color: var(--accent-eco);
+            color: var(--accent-eco);
+        }
+
+        .map-canvas-container {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            position: relative;
+            background: radial-gradient(circle at center, #0e1524 0%, #080b12 100%);
+            cursor: crosshair;
+        }
+
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .map-legend {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            background: rgba(13, 18, 30, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: var(--radius-md);
+            display: flex;
+            gap: 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Right Controls Box */
+        .stripe-card-box {
+            background: rgba(234, 179, 8, 0.08);
+            border: 1px dashed rgba(234, 179, 8, 0.4);
+            border-radius: var(--radius-md);
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .form-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+
+        .slider-group {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent-eco);
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent-eco);
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 12px;
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-family: var(--font-main);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .control-btn.active {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: var(--accent-green);
+        }
+
+        .log-feed {
+            height: 110px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .log-item {
+            font-size: 12px;
+            padding: 6px 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border-left: 3px solid var(--accent-blue);
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Modals */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            width: 540px;
+            background: #0d121e;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .code-preview {
+            background: #060911;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 12px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #fde047;
+            max-height: 180px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="brand">
+            <div class="brand-logo">
+                <i class="fa-solid fa-crow"></i>
+            </div>
+            <div>
+                <span class="brand-title">Navimow Nazca Geoglyph Studio</span>
+            </div>
+            <span class="brand-badge" id="headerModeBadge"><i class="fa-solid fa-feather-pointed"></i> Nazca Lines Geoglyphs Active</span>
+        </div>
+
+        <div class="header-controls">
+            <button class="btn btn-primary" id="btnToggleAnim" onclick="toggleSimulation()">
+                <i class="fa-solid fa-pause" id="simIcon"></i> <span id="simText">Pause Animation</span>
+            </button>
+            <button class="btn btn-eco" id="btnRecalcStripes" onclick="calculateLayer2Pattern()">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Recalculate Geoglyph
+            </button>
+            <button class="btn btn-purple" id="btnEditMode" onclick="toggleEditSurfaceMode()">
+                <i class="fa-solid fa-draw-polygon"></i> Edit Lawn Surface
+            </button>
+            <button class="btn btn-secondary" onclick="openSaveModal()">
+                <i class="fa-solid fa-floppy-disk"></i> Save Layers
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        
+        <!-- Left Panel: Layer Telemetry & Geoglyph Selector -->
+        <div class="glass-card">
+            <div class="card-header" style="border: none; padding: 0;">
+                <span class="card-title"><i class="fa-solid fa-layer-group"></i> Nazca Lines Geoglyphs Form Selector</span>
+                <span class="status-badge status-eco" id="statusBadge">
+                    <span class="pulse-dot"></span> <span id="statusText">LAYER 2 ACTIVE</span>
+                </span>
+            </div>
+
+            <!-- Layer 2 Nazca Geoglyph Selector Grid -->
+            <div class="pattern-selector-grid">
+                <button class="pattern-btn active" id="patBtnHummingbird" onclick="setLayer2PatternShape('nazca_hummingbird')">
+                    <i class="fa-solid fa-crow"></i> Nazca Hummingbird
+                </button>
+                <button class="pattern-btn" id="patBtnNazcaMonkey" onclick="setLayer2PatternShape('nazca_monkey')">
+                    <i class="fa-solid fa-shield-cat"></i> Nazca Spiral Monkey
+                </button>
+                <button class="pattern-btn" id="patBtnSpiralGeoglyph" onclick="setLayer2PatternShape('nazca_spiral')">
+                    <i class="fa-solid fa-sun"></i> Nazca Sun Spiral
+                </button>
+                <button class="pattern-btn" id="patBtnConcentricCircles" onclick="setLayer2PatternShape('circles')">
+                    <i class="fa-solid fa-bullseye"></i> Concentric Rings
+                </button>
+            </div>
+
+            <!-- Layer 1 Metric Box -->
+            <div class="metric-box" style="border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">
+                <div class="metric-label" style="color: var(--accent-green); font-weight: 600;">
+                    <i class="fa-solid fa-scissors"></i> Layer 1: Standard Mowing Area
+                </div>
+                <div class="metric-value" id="calcAreaValue" style="color: var(--accent-green); font-size: 22px;">384.8 m²</div>
+                <div class="metric-sub">Cutting Height: <strong>45 mm</strong> (Regular Cut)</div>
+            </div>
+
+            <!-- Layer 2 High Grass Geoglyph Sanctuary Metric Box -->
+            <div class="metric-box" style="border-color: rgba(234, 179, 8, 0.5); background: rgba(234, 179, 8, 0.1);">
+                <div class="metric-label" style="color: var(--accent-eco); font-weight: 600;">
+                    <i class="fa-solid fa-feather-pointed"></i> Layer 2: High-Grass Geoglyph Form
+                </div>
+                <div class="metric-value" id="calcStripeAreaValue" style="color: var(--accent-eco); font-size: 22px;">135.2 m² (26%)</div>
+                <div class="metric-sub">High-Grass Height: <strong id="stripeHeightText">85 mm</strong> (Wildlife Habitat)</div>
+            </div>
+
+            <!-- Biodiversity Eco Score -->
+            <div class="metric-box">
+                <div class="metric-label">
+                    <i class="fa-solid fa-heart-pulse" style="color: #ec4899;"></i> Biodiversity Preservation Score
+                </div>
+                <div class="metric-value" style="color: #f472b6;" id="ecoScoreValue">+45% Eco Protection</div>
+                <div class="metric-sub">Protects insects & fauna in high-grass Nazca outlines</div>
+            </div>
+
+            <!-- Metrics Grid -->
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label"><i class="fa-solid fa-battery-three-quarters"></i> Battery</div>
+                    <div class="metric-value" id="batteryValue">84%</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label"><i class="fa-solid fa-sliders"></i> Dynamic Motor</div>
+                    <div class="metric-value" id="activeBladeHeight" style="font-size: 15px; color: var(--accent-eco);">Auto-Adjusting</div>
+                </div>
+            </div>
+
+            <!-- Specs -->
+            <div style="font-size: 12px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; border-top: 1px solid var(--border-color); padding-top: 8px;">
+                <div><strong>Current Geoglyph:</strong> <span id="patNameText" style="color: var(--accent-eco); font-weight: 600;">Nazca Hummingbird</span></div>
+                <div><strong>Navigation Engine:</strong> Geoglyph Path Bypass</div>
+            </div>
+        </div>
+
+        <!-- Middle Panel: Real-time 2D Canvas Map -->
+        <div class="glass-card map-card">
+            <div class="map-toolbar">
+                <div class="map-status-overlay">
+                    <span><i class="fa-solid fa-location-crosshairs" style="color: var(--accent-eco);"></i> Position: <strong id="coordText">52.3676° N, 4.9041° E</strong></span>
+                </div>
+                <div class="map-actions">
+                    <button class="map-btn active" id="btnToggleLayer2" onclick="toggleLayer2Visibility()">
+                        <i class="fa-solid fa-eye"></i> Layer 2 Overlay
+                    </button>
+                    <button class="map-btn" onclick="calculateLayer2Pattern()">
+                        <i class="fa-solid fa-rotate"></i> Regenerate Geoglyph
+                    </button>
+                    <button class="map-btn" onclick="resetMowerToSafeCenter()"><i class="fa-solid fa-crosshairs"></i> Reset Mower</button>
+                </div>
+            </div>
+
+            <div class="map-canvas-container" id="mapContainer">
+                <canvas id="lawnCanvas"></canvas>
+                
+                <div class="map-legend">
+                    <div class="legend-item"><div class="legend-color" style="background: #15803d;"></div> Layer 1: Regular Cut (45mm)</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #eab308;"></div> Layer 2: Nazca Geoglyph (85mm)</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #22c55e;"></div> Mowed Path</div>
+                    <div class="legend-item"><div class="legend-color" style="background: #ef4444;"></div> No-Go Zone</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel: Layer 2 Form Controls -->
+        <div class="glass-card">
+            <div class="card-header">
+                <span class="card-title"><i class="fa-solid fa-sliders"></i> Geoglyph Scale & Controls</span>
+            </div>
+
+            <!-- Layer 2 Configuration Form Box -->
+            <div class="stripe-card-box">
+                <div style="font-size: 13px; font-weight: 700; color: var(--accent-eco); display: flex; align-items: center; justify-content: space-between;">
+                    <span><i class="fa-solid fa-feather-pointed"></i> Nazca Lines Scale & Angle</span>
+                    <span style="font-size: 11px; background: rgba(234, 179, 8, 0.2); padding: 2px 6px; border-radius: 4px;" id="stripeCountTag">Nazca Form</span>
+                </div>
+
+                <!-- Geoglyph Scale / Size Slider -->
+                <div class="slider-group">
+                    <div class="form-row">
+                        <span class="metric-label"><i class="fa-solid fa-up-right-and-down-left-from-center"></i> Geoglyph Size / Scale</span>
+                        <strong id="valPatternScale" style="color: var(--accent-eco);">100%</strong>
+                    </div>
+                    <input type="range" id="sliderPatternScale" min="50" max="180" step="10" value="100" oninput="updatePatternParams()">
+                </div>
+
+                <!-- Geoglyph Rotation Angle Slider -->
+                <div class="slider-group">
+                    <div class="form-row">
+                        <span class="metric-label"><i class="fa-solid fa-rotate"></i> Geoglyph Rotation Angle</span>
+                        <strong id="valStripeAngle" style="color: var(--accent-eco);">45° Angle</strong>
+                    </div>
+                    <input type="range" id="sliderStripeAngle" min="0" max="360" step="15" value="45" oninput="updatePatternParams()">
+                </div>
+
+                <!-- High Grass Height Slider -->
+                <div class="slider-group">
+                    <div class="form-row">
+                        <span class="metric-label"><i class="fa-solid fa-up-long"></i> High-Grass Height</span>
+                        <strong id="valHighGrassHeight" style="color: var(--accent-eco);">85 mm</strong>
+                    </div>
+                    <input type="range" id="sliderHighGrassHeight" min="60" max="100" step="5" value="85" oninput="updatePatternParams()">
+                </div>
+
+                <button class="btn btn-eco" style="width: 100%; font-size: 13px; padding: 10px;" onclick="calculateLayer2Pattern()">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Apply & Recalculate Nazca Geoglyph
+                </button>
+            </div>
+
+            <!-- Primary Mower Commands -->
+            <div class="controls-grid">
+                <button class="control-btn active" id="btnStart" onclick="sendMowerCommand('start')">
+                    <i class="fa-solid fa-play"></i> Start Mowing
+                </button>
+                <button class="control-btn" id="btnPause" onclick="sendMowerCommand('pause')">
+                    <i class="fa-solid fa-pause"></i> Pause
+                </button>
+                <button class="control-btn" id="btnDock" onclick="sendMowerCommand('dock')">
+                    <i class="fa-solid fa-house-chimney"></i> Return Dock
+                </button>
+                <button class="control-btn" id="btnResume" onclick="sendMowerCommand('resume')">
+                    <i class="fa-solid fa-forward"></i> Resume
+                </button>
+            </div>
+
+            <!-- Activity Log -->
+            <div style="border-top: 1px solid var(--border-color); padding-top: 10px;">
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 6px; display: flex; justify-content: space-between;">
+                    <span><i class="fa-solid fa-list-ul"></i> Activity Log</span>
+                    <span style="color: var(--accent-green); font-size: 10px;">● Live</span>
+                </div>
+                <div class="log-feed" id="logFeed"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Save Dual Layer Modal -->
+    <div class="modal-backdrop" id="saveModal">
+        <div class="modal-card">
+            <div class="card-header">
+                <span class="card-title"><i class="fa-solid fa-floppy-disk"></i> Save Dual-Layer Configuration</span>
+                <button class="map-btn" onclick="closeSaveModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div style="font-size: 13px; color: var(--text-secondary);">
+                Layer 1 Base Lawn: <strong id="modalL1Area" style="color: var(--accent-green);">384.8 m²</strong> | 
+                Layer 2 Nazca Geoglyph: <strong id="modalL2Area" style="color: var(--accent-eco);">135.2 m²</strong>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Python SDK Variable Array Payload</label>
+                <div class="code-preview" id="pythonCodePreview"></div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">JSON Multi-Layer Config</label>
+                <div class="code-preview" id="jsonCodePreview"></div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button class="btn btn-secondary" onclick="closeSaveModal()">Cancel</button>
+                <button class="btn btn-eco" onclick="downloadDualLayerJSON()"><i class="fa-solid fa-download"></i> Download JSON</button>
+                <button class="btn btn-primary" onclick="saveDualLayerToLocalStorage()"><i class="fa-solid fa-check"></i> Save LocalStorage</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Navigation & Nazca Lines Geoglyphs Engine -->
+    <script>
+        // State variables
+        let selectedPatternType = 'nazca_hummingbird'; // 'nazca_hummingbird', 'nazca_monkey', 'nazca_spiral', 'circles'
+        let isSimulating = true;
+        let isEditingSurface = false;
+        let showLayer2Overlay = true;
+        let mowerState = 'mowing';
+        let batteryPct = 84;
+        let consecutiveBlockedTurns = 0;
+
+        // Polygon & Layer Data
+        let lawnBoundary = [];
+        let defaultLawnBoundary = [];
+        let layer2Shapes = [];
+        let noGoZones = [];
+        let dockStation = { x: 120, y: 380 };
+
+        // Layer 2 Parameters
+        let patternScalePct = 100;
+        let patternAngleDeg = 45;
+        let animalGrassHeightMm = 85;
+        let totalSurfaceM2 = 520.0;
+        let layer1MowingM2 = 384.8;
+        let layer2AnimalStripeM2 = 135.2;
+
+        // Canvas Setup
+        const canvas = document.getElementById('lawnCanvas');
+        const ctx = canvas.getContext('2d');
+        let canvasWidth, canvasHeight;
+
+        // Mower state object
+        let mower = {
+            x: 300,
+            y: 250,
+            angle: 45,
+            speed: 1.5,
+            currentBladeHeight: 45,
+            pathHistory: []
+        };
+
+        function resizeCanvas() {
+            const container = document.getElementById('mapContainer');
+            canvasWidth = container.clientWidth;
+            canvasHeight = container.clientHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+
+            const padX = canvasWidth * 0.12;
+            const padY = canvasHeight * 0.12;
+            const w = canvasWidth - padX * 2;
+            const h = canvasHeight - padY * 2;
+
+            defaultLawnBoundary = [
+                { x: padX, y: padY },
+                { x: padX + w * 0.85, y: padY },
+                { x: padX + w, y: padY + h * 0.35 },
+                { x: padX + w * 0.9, y: padY + h },
+                { x: padX + w * 0.15, y: padY + h * 0.95 },
+                { x: padX, y: padY + h * 0.6 }
+            ];
+
+            if (lawnBoundary.length === 0) {
+                lawnBoundary = JSON.parse(JSON.stringify(defaultLawnBoundary));
+            }
+
+            noGoZones = [
+                { cx: padX + w * 0.55, cy: padY + h * 0.4, r: 40, label: 'Swimming Pool' },
+                { cx: padX + w * 0.25, cy: padY + h * 0.65, r: 25, label: 'Tree / Flowerbed' }
+            ];
+
+            dockStation = { x: padX + 25, y: padY + h * 0.85 };
+
+            resetMowerToSafeCenter();
+            recalculateSurfaceMetrics();
+            calculateLayer2Pattern();
+        }
+
+        function resetMowerToSafeCenter() {
+            if (lawnBoundary.length < 3) return;
+            let sumX = 0, sumY = 0;
+            lawnBoundary.forEach(p => { sumX += p.x; sumY += p.y; });
+            mower.x = sumX / lawnBoundary.length;
+            mower.y = sumY / lawnBoundary.length;
+            mower.angle = 45;
+            mower.pathHistory = [{ x: mower.x, y: mower.y }];
+            consecutiveBlockedTurns = 0;
+            addLogEntry(`Reset mower position to centroid (${Math.round(mower.x)}, ${Math.round(mower.y)})`);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function recalculateSurfaceMetrics() {
+            if (lawnBoundary.length < 3) return;
+            let area = 0;
+            const n = lawnBoundary.length;
+            for (let i = 0; i < n; i++) {
+                const j = (i + 1) % n;
+                area += lawnBoundary[i].x * lawnBoundary[j].y;
+                area -= lawnBoundary[j].x * lawnBoundary[i].y;
+            }
+            area = Math.abs(area) / 2.0;
+            totalSurfaceM2 = (area * 0.0035).toFixed(1);
+        }
+
+        // Layer 2 Engine: Generate Authentic Nazca Lines Geoglyphs
+        function calculateLayer2Pattern() {
+            if (lawnBoundary.length < 3) return;
+            layer2Shapes = [];
+
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            lawnBoundary.forEach(p => {
+                minX = Math.min(minX, p.x);
+                maxX = Math.max(maxX, p.x);
+                minY = Math.min(minY, p.y);
+                maxY = Math.max(maxY, p.y);
+            });
+
+            const cx = (minX + maxX) / 2;
+            const cy = (minY + maxY) / 2;
+            const scale = (patternScalePct / 100.0);
+            const rad = patternAngleDeg * (Math.PI / 180);
+
+            if (selectedPatternType === 'nazca_hummingbird') {
+                // Iconic Nazca Hummingbird Geoglyph Polygon (Beak, Wings, Tail feathers)
+                const hummingbirdPointsRaw = [
+                    { x: -110, y: 0 },   // Long Beak Tip
+                    { x: -40, y: -10 },  // Head / Neck
+                    { x: -20, y: -70 },  // Left Wing Tip
+                    { x: 0, y: -20 },    // Wing Base
+                    { x: 50, y: -80 },   // Right Wing Tip
+                    { x: 30, y: 0 },     // Torso
+                    { x: 80, y: 40 },    // Tail Feather Top
+                    { x: 95, y: 70 },    // Tail Feather Mid
+                    { x: 65, y: 75 },    // Tail Feather Bottom
+                    { x: 20, y: 35 },    // Lower Body
+                    { x: -30, y: 20 }    // Lower Neck
+                ];
+
+                const hbPoly = hummingbirdPointsRaw.map(pt => {
+                    const scaledX = pt.x * 1.0 * scale;
+                    const scaledY = pt.y * 1.0 * scale;
+                    return rotatePoint({ x: scaledX, y: scaledY }, rad, cx, cy);
+                });
+
+                layer2Shapes.push({ type: 'polygon', points: hbPoly, name: 'Nazca Hummingbird' });
+
+            } else if (selectedPatternType === 'nazca_monkey') {
+                // Iconic Nazca Spiral Tail Monkey Geoglyph
+                const monkeyPointsRaw = [
+                    { x: -50, y: -40 }, // Head
+                    { x: 0, y: -70 },   // Arm Left
+                    { x: -10, y: -20 }, // Shoulder
+                    { x: 40, y: -60 },  // Arm Right
+                    { x: 30, y: 20 },   // Body
+                    { x: 60, y: 60 },   // Leg Right
+                    { x: 10, y: 75 },   // Leg Left
+                    { x: -30, y: 40 },  // Hip
+                    { x: -80, y: 60 },  // Spiral Tail Outer
+                    { x: -90, y: 10 },  // Spiral Tail Mid
+                    { x: -65, y: -10 }  // Spiral Tail Inner
+                ];
+
+                const monkeyPoly = monkeyPointsRaw.map(pt => {
+                    return rotatePoint({ x: pt.x * scale, y: pt.y * scale }, rad, cx, cy);
+                });
+
+                layer2Shapes.push({ type: 'polygon', points: monkeyPoly, name: 'Nazca Spiral Monkey' });
+
+            } else if (selectedPatternType === 'nazca_spiral') {
+                // Nazca Concentric Sun Spiral Ring Shapes
+                const baseR = Math.min(maxX - minX, maxY - minY) * 0.36 * scale;
+                layer2Shapes.push({ type: 'ring', cx, cy, rOuter: baseR, rInner: baseR * 0.75, name: 'Nazca Sun Ring Outer' });
+                layer2Shapes.push({ type: 'ring', cx, cy, rOuter: baseR * 0.55, rInner: baseR * 0.35, name: 'Nazca Sun Ring Inner' });
+                layer2Shapes.push({ type: 'circle', cx, cy, r: baseR * 0.18 });
+
+            } else {
+                // Concentric Circles Fallback
+                const baseR = Math.min(maxX - minX, maxY - minY) * 0.35 * scale;
+                layer2Shapes.push({ type: 'ring', cx, cy, rOuter: baseR, rInner: baseR * 0.65 });
+            }
+
+            layer2AnimalStripeM2 = (totalSurfaceM2 * 0.27).toFixed(1);
+            layer1MowingM2 = (totalSurfaceM2 - layer2AnimalStripeM2).toFixed(1);
+
+            document.getElementById('calcAreaValue').innerText = `${layer1MowingM2} m²`;
+            document.getElementById('calcStripeAreaValue').innerText = `${layer2AnimalStripeM2} m² (27%)`;
+            document.getElementById('stripeCountTag').innerText = `Nazca Geoglyph Active`;
+
+            addLogEntry(`Generated Nazca Line Geoglyph: '${selectedPatternType.toUpperCase()}'`);
+        }
+
+        function rotatePoint(pt, rad, cx, cy) {
+            const cos = Math.cos(rad);
+            const sin = Math.sin(rad);
+            return {
+                x: (cos * pt.x) - (sin * pt.y) + cx,
+                y: (sin * pt.x) + (cos * pt.y) + cy
+            };
+        }
+
+        function setLayer2PatternShape(patType) {
+            selectedPatternType = patType;
+
+            const btns = ['patBtnHummingbird', 'patBtnNazcaMonkey', 'patBtnSpiralGeoglyph', 'patBtnConcentricCircles'];
+            btns.forEach(id => document.getElementById(id).classList.remove('active'));
+
+            if (patType === 'nazca_hummingbird') document.getElementById('patBtnHummingbird').classList.add('active');
+            if (patType === 'nazca_monkey') document.getElementById('patBtnNazcaMonkey').classList.add('active');
+            if (patType === 'nazca_spiral') document.getElementById('patBtnSpiralGeoglyph').classList.add('active');
+            if (patType === 'circles') document.getElementById('patBtnConcentricCircles').classList.add('active');
+
+            const readableNames = {
+                'nazca_hummingbird': 'Nazca Hummingbird Geoglyph',
+                'nazca_monkey': 'Nazca Spiral Monkey Geoglyph',
+                'nazca_spiral': 'Nazca Sun Spiral Geoglyph',
+                'circles': 'Concentric Ring Geoglyphs'
+            };
+            document.getElementById('patNameText').innerText = readableNames[patType];
+
+            calculateLayer2Pattern();
+        }
+
+        function updatePatternParams() {
+            patternScalePct = parseInt(document.getElementById('sliderPatternScale').value);
+            patternAngleDeg = parseInt(document.getElementById('sliderStripeAngle').value);
+            animalGrassHeightMm = parseInt(document.getElementById('sliderHighGrassHeight').value);
+
+            document.getElementById('valPatternScale').innerText = `${patternScalePct}%`;
+            document.getElementById('valStripeAngle').innerText = `${patternAngleDeg}° Angle`;
+            document.getElementById('valHighGrassHeight').innerText = `${animalGrassHeightMm} mm`;
+            document.getElementById('stripeHeightText').innerText = `${animalGrassHeightMm} mm`;
+
+            calculateLayer2Pattern();
+        }
+
+        function toggleLayer2Visibility() {
+            showLayer2Overlay = !showLayer2Overlay;
+            document.getElementById('btnToggleLayer2').classList.toggle('active', showLayer2Overlay);
+        }
+
+        function toggleSimulation() {
+            isSimulating = !isSimulating;
+            document.getElementById('simText').innerText = isSimulating ? 'Pause Animation' : 'Resume Animation';
+            document.getElementById('simIcon').className = isSimulating ? 'fa-solid fa-pause' : 'fa-solid fa-play';
+        }
+
+        // Mower Navigation Physics Engine with Nazca Geoglyph Collisions
+        function updateMowerPhysics() {
+            if (!isSimulating || isEditingSurface || mowerState === 'paused' || mowerState === 'docked') return;
+
+            const step = 1.5;
+            const rad = mower.angle * (Math.PI / 180);
+            const nextX = mower.x + Math.cos(rad) * step;
+            const nextY = mower.y + Math.sin(rad) * step;
+
+            const insideBoundary = pointInPolygon({ x: nextX, y: nextY }, lawnBoundary);
+            const obstacleHit = hitsObstacle(nextX, nextY);
+
+            if (insideBoundary && !obstacleHit) {
+                mower.x = nextX;
+                mower.y = nextY;
+                mower.pathHistory.push({ x: mower.x, y: mower.y });
+                consecutiveBlockedTurns = 0;
+
+                if (mower.pathHistory.length > 600) mower.pathHistory.shift();
+
+                // Check inside Layer 2 Nazca Geoglyph Shape
+                const inLayer2Shape = isPointInLayer2Shapes(mower.x, mower.y);
+                if (inLayer2Shape) {
+                    mower.currentBladeHeight = animalGrassHeightMm;
+                    document.getElementById('activeBladeHeight').innerText = `Raised ${animalGrassHeightMm}mm (Nazca)`;
+                    document.getElementById('activeBladeHeight').style.color = 'var(--accent-eco)';
+                } else {
+                    mower.currentBladeHeight = 45;
+                    document.getElementById('activeBladeHeight').innerText = 'Standard 45mm';
+                    document.getElementById('activeBladeHeight').style.color = 'var(--accent-green)';
+                }
+            } else {
+                mower.angle = (mower.angle + 125) % 360;
+                consecutiveBlockedTurns++;
+                if (consecutiveBlockedTurns > 4) resetMowerToSafeCenter();
+            }
+        }
+
+        function isPointInLayer2Shapes(x, y) {
+            if (!showLayer2Overlay) return false;
+            return layer2Shapes.some(shape => {
+                if (shape.type === 'polygon') return pointInPolygon({ x, y }, shape.points);
+                if (shape.type === 'circle') return Math.hypot(x - shape.cx, y - shape.cy) <= shape.r;
+                if (shape.type === 'ring') {
+                    const dist = Math.hypot(x - shape.cx, y - shape.cy);
+                    return dist <= shape.rOuter && dist >= shape.rInner;
+                }
+                return false;
+            });
+        }
+
+        function pointInPolygon(pt, poly) {
+            if (!poly || poly.length < 3) return false;
+            let inside = false;
+            for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+                const xi = poly[i].x, yi = poly[i].y;
+                const xj = poly[j].x, yj = poly[j].y;
+                const intersect = ((yi > pt.y) !== (yj > pt.y)) &&
+                    (pt.x < (xj - xi) * (pt.y - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        function hitsObstacle(x, y) {
+            return noGoZones.some(o => Math.hypot(x - o.cx, y - o.cy) < o.r + 12);
+        }
+
+        function drawRoundedRect(c, x, y, width, height, radius) {
+            c.beginPath();
+            c.moveTo(x + radius, y);
+            c.lineTo(x + width - radius, y);
+            c.quadraticCurveTo(x + width, y, x + width, y + radius);
+            c.lineTo(x + width, y + height - radius);
+            c.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            c.lineTo(x + radius, y + height);
+            c.quadraticCurveTo(x, y + height, x, y + height - radius);
+            c.lineTo(x, y + radius);
+            c.quadraticCurveTo(x, y, x + radius, y);
+            c.closePath();
+        }
+
+        // Canvas Rendering Loop for Nazca Line Geoglyphs
+        function drawMap() {
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+            // 1. Layer 1 Base Lawn Polygon
+            if (lawnBoundary.length > 0) {
+                ctx.beginPath();
+                ctx.moveTo(lawnBoundary[0].x, lawnBoundary[0].y);
+                for (let i = 1; i < lawnBoundary.length; i++) {
+                    ctx.lineTo(lawnBoundary[i].x, lawnBoundary[i].y);
+                }
+                ctx.closePath();
+                ctx.fillStyle = '#0f381c';
+                ctx.fill();
+                ctx.strokeStyle = isEditingSurface ? '#8b5cf6' : '#10b981';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // 2. Layer 2 Nazca Lines Geoglyphs Overlay
+            if (showLayer2Overlay && layer2Shapes.length > 0) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(lawnBoundary[0].x, lawnBoundary[0].y);
+                for (let i = 1; i < lawnBoundary.length; i++) {
+                    ctx.lineTo(lawnBoundary[i].x, lawnBoundary[i].y);
+                }
+                ctx.closePath();
+                ctx.clip();
+
+                layer2Shapes.forEach(shape => {
+                    if (shape.type === 'polygon') {
+                        ctx.beginPath();
+                        ctx.moveTo(shape.points[0].x, shape.points[0].y);
+                        for (let i = 1; i < shape.points.length; i++) {
+                            ctx.lineTo(shape.points[i].x, shape.points[i].y);
+                        }
+                        ctx.closePath();
+                        ctx.fillStyle = 'rgba(234, 179, 8, 0.4)';
+                        ctx.fill();
+                        ctx.strokeStyle = '#eab308';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+
+                        if (shape.name) {
+                            ctx.fillStyle = '#ffffff';
+                            ctx.font = 'bold 12px Inter';
+                            ctx.textAlign = 'center';
+                            const cx = shape.points.reduce((acc, p) => acc + p.x, 0) / shape.points.length;
+                            const cy = shape.points.reduce((acc, p) => acc + p.y, 0) / shape.points.length;
+                            ctx.fillText(shape.name, cx, cy);
+                        }
+                    } else if (shape.type === 'circle') {
+                        ctx.beginPath();
+                        ctx.arc(shape.cx, shape.cy, shape.r, 0, Math.PI * 2);
+                        ctx.fillStyle = 'rgba(234, 179, 8, 0.35)';
+                        ctx.fill();
+                        ctx.strokeStyle = '#eab308';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    } else if (shape.type === 'ring') {
+                        ctx.beginPath();
+                        ctx.arc(shape.cx, shape.cy, shape.rOuter, 0, Math.PI * 2);
+                        ctx.arc(shape.cx, shape.cy, shape.rInner, 0, Math.PI * 2, true);
+                        ctx.fillStyle = 'rgba(234, 179, 8, 0.35)';
+                        ctx.fill();
+                        ctx.strokeStyle = '#eab308';
+                        ctx.lineWidth = 2;
+                        ctx.stroke();
+                    }
+                });
+
+                ctx.restore();
+            }
+
+            // 3. Mowed Path Trail
+            if (mower.pathHistory.length > 1) {
+                ctx.strokeStyle = 'rgba(34, 197, 94, 0.7)';
+                ctx.lineWidth = 12;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.beginPath();
+                ctx.moveTo(mower.pathHistory[0].x, mower.pathHistory[0].y);
+                for (let i = 1; i < mower.pathHistory.length; i++) {
+                    ctx.lineTo(mower.pathHistory[i].x, mower.pathHistory[i].y);
+                }
+                ctx.stroke();
+            }
+
+            // 4. No-Go Obstacles
+            noGoZones.forEach(zone => {
+                ctx.beginPath();
+                ctx.arc(zone.cx, zone.cy, zone.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+                ctx.fill();
+                ctx.strokeStyle = '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                ctx.fillStyle = '#f8fafc';
+                ctx.font = '11px Inter';
+                ctx.textAlign = 'center';
+                ctx.fillText(zone.label, zone.cx, zone.cy + 4);
+            });
+
+            // 5. Dock Station
+            ctx.beginPath();
+            ctx.arc(dockStation.x, dockStation.y, 14, 0, Math.PI * 2);
+            ctx.fillStyle = '#3b82f6';
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // 6. Mower Vehicle
+            ctx.save();
+            ctx.translate(mower.x, mower.y);
+            ctx.rotate(mower.angle * Math.PI / 180);
+
+            ctx.beginPath();
+            ctx.arc(0, 0, 16, 0, Math.PI * 2);
+            ctx.fillStyle = mower.currentBladeHeight > 50 ? 'rgba(234, 179, 8, 0.5)' : 'rgba(16, 185, 129, 0.4)';
+            ctx.fill();
+
+            ctx.fillStyle = '#1e293b';
+            ctx.strokeStyle = mower.currentBladeHeight > 50 ? '#eab308' : '#10b981';
+            ctx.lineWidth = 2;
+            drawRoundedRect(ctx, -12, -10, 24, 20, 5);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = mower.currentBladeHeight > 50 ? '#eab308' : '#10b981';
+            ctx.beginPath();
+            ctx.moveTo(12, 0);
+            ctx.lineTo(4, -6);
+            ctx.lineTo(4, 6);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+
+            document.getElementById('headingValue').innerText = `${Math.floor(mower.angle)}°`;
+            const lat = (52.3676 + (mower.y - 200) * 0.00001).toFixed(4);
+            const lng = (4.9041 + (mower.x - 250) * 0.00001).toFixed(4);
+            document.getElementById('coordText').innerText = `${lat}° N, ${lng}° E`;
+        }
+
+        // Animation Loop
+        function animate() {
+            try {
+                updateMowerPhysics();
+                drawMap();
+            } catch (err) {
+                console.error(err);
+            }
+            requestAnimationFrame(animate);
+        }
+
+        // UI Handlers & Modal Logic
+        function sendMowerCommand(cmd) {
+            const buttons = ['btnStart', 'btnPause', 'btnDock', 'btnResume'];
+            buttons.forEach(id => document.getElementById(id).classList.remove('active'));
+
+            if (cmd === 'start') {
+                mowerState = 'mowing';
+                isSimulating = true;
+                document.getElementById('btnStart').classList.add('active');
+                addLogEntry('Command: Start Dual-Layer session');
+            } else if (cmd === 'pause') {
+                mowerState = 'paused';
+                isSimulating = false;
+                document.getElementById('btnPause').classList.add('active');
+                addLogEntry('Command: Pause navigation');
+            } else if (cmd === 'dock') {
+                mowerState = 'returning';
+                document.getElementById('btnDock').classList.add('active');
+                addLogEntry('Command: Return to charging dock');
+            } else if (cmd === 'resume') {
+                mowerState = 'mowing';
+                isSimulating = true;
+                document.getElementById('btnResume').classList.add('active');
+                addLogEntry('Command: Resume operation');
+            }
+        }
+
+        function addLogEntry(msg) {
+            const feed = document.getElementById('logFeed');
+            const now = new Date().toLocaleTimeString();
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.innerHTML = `<span>${msg}</span> <span class="log-time">${now}</span>`;
+            feed.prepend(item);
+        }
+
+        function openSaveModal() {
+            document.getElementById('modalL1Area').innerText = `${layer1MowingM2} m²`;
+            document.getElementById('modalL2Area').innerText = `${layer2AnimalStripeM2} m²`;
+
+            const payload = {
+                nazca_geoglyph_form: selectedPatternType,
+                layer1_base_lawn: {
+                    area_m2: parseFloat(layer1MowingM2),
+                    cutting_height_mm: 45,
+                    boundary_vertices: lawnBoundary
+                },
+                layer2_nazca_geoglyph_habitat: {
+                    form_type: selectedPatternType,
+                    high_grass_height_mm: animalGrassHeightMm,
+                    scale_pct: patternScalePct,
+                    rotation_deg: patternAngleDeg,
+                    reserved_habitat_area_m2: parseFloat(layer2AnimalStripeM2),
+                    shapes: layer2Shapes
+                }
+            };
+
+            document.getElementById('jsonCodePreview').innerText = JSON.stringify(payload, null, 2);
+
+            const pySnippet = `# Dual Layer Navimow Nazca Geoglyph Configuration\nNAZCA_GEOGLYPH_FORM = '${selectedPatternType}'\nLAYER_1_BASE_MOWING_AREA_M2 = ${layer1MowingM2}\nLAYER_2_NAZCA_HABITAT_AREA_M2 = ${layer2AnimalStripeM2}\nANIMAL_HIGH_GRASS_HEIGHT_MM = ${animalGrassHeightMm}\nGEOGLYPH_SCALE_PCT = ${patternScalePct}`;
+            document.getElementById('pythonCodePreview').innerText = pySnippet;
+
+            document.getElementById('saveModal').classList.add('active');
+        }
+
+        function closeSaveModal() {
+            document.getElementById('saveModal').classList.remove('active');
+        }
+
+        function downloadDualLayerJSON() {
+            const data = {
+                nazca_geoglyph_form: selectedPatternType,
+                layer1_base_mowing_m2: parseFloat(layer1MowingM2),
+                layer2_nazca_habitat_m2: parseFloat(layer2AnimalStripeM2),
+                high_grass_height_mm: animalGrassHeightMm,
+                scale_pct: patternScalePct,
+                rotation_deg: patternAngleDeg,
+                shapes: layer2Shapes,
+                boundary: lawnBoundary
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `navimow_nazca_${selectedPatternType}_${layer2AnimalStripeM2}m2.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+            addLogEntry('Downloaded Nazca Geoglyph Configuration JSON');
+        }
+
+        function saveDualLayerToLocalStorage() {
+            const data = {
+                patternType: selectedPatternType,
+                layer1_m2: layer1MowingM2,
+                layer2_m2: layer2AnimalStripeM2,
+                highGrassHeight: animalGrassHeightMm,
+                scale: patternScalePct,
+                angle: patternAngleDeg,
+                boundary: lawnBoundary
+            };
+            localStorage.setItem('navimow_nazca_geoglyphs', JSON.stringify(data));
+            closeSaveModal();
+            addLogEntry(`Saved Nazca Geoglyph '${selectedPatternType}' Config to LocalStorage`);
+        }
+
+        function toggleEditSurfaceMode() {
+            isEditingSurface = !isEditingSurface;
+            addLogEntry(isEditingSurface ? 'Entered Surface Editor Mode' : 'Exited Surface Editor Mode');
+        }
+
+        // Initialize App
+        window.onload = () => {
+            resizeCanvas();
+            setLayer2PatternShape('nazca_hummingbird');
+            addLogEntry('Navimow Nazca Lines Geoglyphs Studio initialized');
+            animate();
+        };
+    </script>
+</body>
+</html>

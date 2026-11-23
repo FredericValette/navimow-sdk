@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Navimow Nazca Lines Studio - Version_korrigiert_1.4.1_british_recovery" />
+  <title>Navimow Studio - Version_korrigiert_1.4.1_british_recovery</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    :root {
+      --bg-dark:#090d16; --bg-card:rgba(18,26,42,.78); --border:rgba(255,255,255,.09);
+      --text:#f8fafc; --muted:#94a3b8; --dim:#64748b; --green:#10b981; --blue:#3b82f6;
+      --yellow:#eab308; --purple:#8b5cf6; --red:#ef4444; --orange:#f59e0b;
+      --radius:16px; --font:'Inter',sans-serif; --head:'Outfit',sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0} body{font-family:var(--font);background:radial-gradient(circle at 10% 10%,rgba(16,185,129,.08),transparent 35%),radial-gradient(circle at 90% 90%,rgba(234,179,8,.08),transparent 35%),var(--bg-dark);color:var(--text);min-height:100vh;overflow-x:hidden}
+    header{height:76px;background:rgba(13,18,30,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 22px;gap:14px;position:sticky;top:0;z-index:10}
+    .brand,.buttons{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--green),var(--yellow));display:flex;align-items:center;justify-content:center;font-size:20px}.title{font-family:var(--head);font-size:20px;font-weight:700}.badge{font-size:11px;border:1px solid rgba(234,179,8,.35);color:var(--yellow);background:rgba(234,179,8,.12);border-radius:999px;padding:4px 9px;font-weight:700;text-transform:uppercase;white-space:nowrap}
+    button{font-family:var(--font);cursor:pointer}.btn{border:1px solid var(--border);border-radius:12px;padding:9px 13px;background:rgba(255,255,255,.06);color:var(--text);font-weight:700;display:inline-flex;gap:7px;align-items:center;transition:.2s}.btn:hover,.btn.active{transform:translateY(-1px);border-color:rgba(59,130,246,.6)}.primary{background:linear-gradient(135deg,var(--green),#059669);border:0}.eco{background:linear-gradient(135deg,var(--yellow),#d97706);border:0;color:#111827}.purple{background:linear-gradient(135deg,var(--purple),#7c3aed);border:0}.blue{background:linear-gradient(135deg,var(--blue),#2563eb);border:0}.active-mode{box-shadow:0 0 0 2px rgba(59,130,246,.35),0 0 18px rgba(59,130,246,.25)}
+    .layout{display:grid;grid-template-columns:340px minmax(520px,1fr)360px;gap:18px;padding:18px;max-width:1920px;margin:auto}@media(max-width:1180px){header{height:auto;padding:14px}.layout{grid-template-columns:1fr}}
+    .card{background:var(--bg-card);backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 32px rgba(0,0,0,.35);padding:18px;display:flex;flex-direction:column;gap:14px}.card h2{font-family:var(--head);font-size:16px;display:flex;align-items:center;gap:8px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}.metric{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:13px;padding:11px;min-width:0}.metric .label{font-size:11px;color:var(--muted);display:flex;gap:6px;align-items:center}.metric .value{font-family:var(--head);font-size:20px;font-weight:700;margin-top:4px}.hint{font-size:12px;color:var(--dim);line-height:1.45}.selector{display:grid;grid-template-columns:1fr 1fr;gap:8px}.selector button{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;color:var(--muted);padding:10px;font-size:12px;font-weight:700}.selector button.active{color:var(--yellow);border-color:var(--yellow);background:rgba(234,179,8,.14)}
+    .map-card{padding:0;position:relative;min-height:650px;overflow:hidden}.toolbar{position:absolute;top:14px;left:14px;right:14px;z-index:4;display:flex;justify-content:space-between;gap:10px;pointer-events:none;flex-wrap:wrap}.pill{pointer-events:auto;border:1px solid var(--border);background:rgba(13,18,30,.88);backdrop-filter:blur(10px);border-radius:999px;padding:8px 13px;font-size:12px}.toolbar .buttons{pointer-events:auto}.canvas-wrap{height:100%;min-height:650px;background:radial-gradient(circle at center,#0f172a,#050816);position:relative}canvas{display:block;width:100%;height:100%}.legend{position:absolute;left:14px;right:14px;bottom:14px;background:rgba(13,18,30,.88);border:1px solid var(--border);border-radius:12px;padding:9px 12px;color:var(--muted);font-size:11px;display:flex;gap:14px;flex-wrap:wrap}.sw{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:5px;vertical-align:-2px}
+    .slider{background:rgba(255,255,255,.035);border:1px solid var(--border);border-radius:13px;padding:11px;display:flex;flex-direction:column;gap:8px}.slider label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:10px}input[type=range]{width:100%;accent-color:var(--yellow)}.log{height:142px;overflow:auto;display:flex;flex-direction:column;gap:6px}.log div{font-size:12px;background:rgba(255,255,255,.035);border-left:3px solid var(--blue);border-radius:0 8px 8px 0;padding:6px 8px;display:flex;justify-content:space-between;gap:8px}.time{color:var(--dim);white-space:nowrap}
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.active{display:flex}.dialog{width:min(760px,100%);max-height:92vh;overflow:auto;background:#0d121e;border:1px solid var(--border);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:13px}.code{background:#050816;border:1px solid var(--border);border-radius:12px;padding:12px;color:#fde047;font-family:ui-monospace,Consolas,monospace;font-size:12px;white-space:pre-wrap;overflow:auto;max-height:240px}
+  </style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo"><i class="fa-solid fa-leaf"></i></div><div><div class="title">Navimow Nazca & British Garden Studio</div><div class="hint">Version_korrigiert_1.4.1_british_recovery</div></div><span class="badge">Nazca Linie + British Lines</span></div>
+  <div class="buttons">
+    <button class="btn primary" id="btnAnim" onclick="toggleSimulation()"><i id="simIcon" class="fa-solid fa-pause"></i><span id="simText">Pause</span></button>
+    <button class="btn purple" id="btnEdit" onclick="toggleEditSurfaceMode()"><i class="fa-solid fa-draw-polygon"></i> Fläche bearbeiten</button>
+    <button class="btn eco" onclick="calculateNazcaPattern()"><i class="fa-solid fa-wand-magic-sparkles"></i> Nazca neu</button>
+    <button class="btn" onclick="openSaveModal()"><i class="fa-solid fa-floppy-disk"></i> Export</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="card">
+    <div class="row"><h2><i class="fa-solid fa-layer-group"></i> Nazca Linien Option</h2><span class="badge" id="statusText">Layer 2 aktiv</span></div>
+    <div class="selector">
+      <button class="active" id="patHumming" onclick="setNazcaShape('hummingbird')"><i class="fa-solid fa-crow"></i><br>Hummingbird</button>
+      <button id="patMonkey" onclick="setNazcaShape('monkey')"><i class="fa-solid fa-shield-cat"></i><br>Monkey</button>
+      <button id="patSpiral" onclick="setNazcaShape('spiral')"><i class="fa-solid fa-sun"></i><br>Spiral</button>
+      <button id="patRings" onclick="setNazcaShape('rings')"><i class="fa-solid fa-bullseye"></i><br>Rings</button>
+    </div>
+    <div class="grid2">
+      <div class="metric"><div class="label"><i class="fa-solid fa-scissors"></i> Layer 1</div><div class="value" id="layer1Value">0 m²</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-feather-pointed"></i> Nazca Linie</div><div class="value" id="layer2Value" style="color:var(--yellow)">0 m²</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-map"></i> Gemäht</div><div class="value" id="coverageValue">0.0%</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-route"></i> Navigation</div><div class="value" id="navValue" style="font-size:16px;color:var(--muted)">Random</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-triangle-exclamation"></i> Anti-Stuck</div><div class="value" id="stuckValue" style="font-size:16px;color:var(--green)">OK</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-grip-lines"></i> British</div><div class="value" id="britishValue" style="font-size:16px;color:var(--blue)">0/0</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-forward-step"></i> British Recovery</div><div class="value" id="britishRecoveryValue" style="font-size:16px;color:var(--green)">OK</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-battery-three-quarters"></i> Batterie</div><div class="value" id="batteryValue">84%</div></div>
+      <div class="metric"><div class="label"><i class="fa-solid fa-compass"></i> Heading</div><div class="value" id="headingValue">45°</div></div>
+    </div>
+    <p class="hint">British Garden mäht parallele Bahnen, lässt die Nazca-Linie als High-Grass-Zone stehen und besitzt jetzt British-Recovery gegen Rand-/Corner-Locks. Wenn die Nazca-Option sichtbar ist, wird sie im British-Modus bei der Planung ausgespart.</p>
+  </aside>
+
+  <main class="card map-card">
+    <div class="toolbar">
+      <div class="pill"><i class="fa-solid fa-location-crosshairs" style="color:var(--yellow)"></i> <span id="coordText">52.3676° N, 4.9041° E</span></div>
+      <div class="buttons">
+        <button class="btn active-mode" id="btnNazca" onclick="toggleNazcaVisibility()"><i class="fa-solid fa-eye"></i> Nazca Linie</button>
+        <button class="btn" id="btnRandom" onclick="setNavigationMode('random')"><i class="fa-solid fa-shuffle"></i> Random</button>
+        <button class="btn" id="btnSmart" onclick="setNavigationMode('smart')"><i class="fa-solid fa-route"></i> Smart</button>
+        <button class="btn blue" id="btnBritish" onclick="setNavigationMode('british')"><i class="fa-solid fa-ruler-combined"></i> British Garden</button>
+        <button class="btn" onclick="resetMower()"><i class="fa-solid fa-crosshairs"></i> Reset</button>
+        <button class="btn" onclick="clearMowedMap()"><i class="fa-solid fa-eraser"></i> Fläche löschen</button>
+      </div>
+    </div>
+    <div class="canvas-wrap" id="canvasWrap"><canvas id="mapCanvas"></canvas>
+      <div class="legend"><span><i class="sw" style="background:#0f381c"></i>Rasen</span><span><i class="sw" style="background:#22c55e"></i>gemäht</span><span><i class="sw" style="background:#eab308"></i>Nazca High-Grass</span><span><i class="sw" style="background:#60a5fa"></i>British Linien</span><span><i class="sw" style="background:#ef4444"></i>No-Go</span></div>
+    </div>
+  </main>
+
+  <aside class="card">
+    <h2><i class="fa-solid fa-sliders"></i> Einstellungen</h2>
+    <div class="slider"><label>Nazca Größe <strong id="scaleText">100%</strong></label><input type="range" id="scaleSlider" min="50" max="180" step="10" value="100" oninput="updateParams()"></div>
+    <div class="slider"><label>Nazca Rotation <strong id="nazcaAngleText">45°</strong></label><input type="range" id="nazcaAngleSlider" min="0" max="360" step="15" value="45" oninput="updateParams()"></div>
+    <div class="slider"><label>High-Grass Höhe <strong id="heightText">85 mm</strong></label><input type="range" id="heightSlider" min="60" max="100" step="5" value="85" oninput="updateParams()"></div>
+    <div class="slider"><label>British Linien-Winkel <strong id="britishAngleText">0°</strong></label><input type="range" id="britishAngleSlider" min="0" max="180" step="15" value="0" oninput="updateBritishParams()"></div>
+    <div class="slider"><label>British Linien-Abstand <strong id="britishSpacingText">34 px</strong></label><input type="range" id="britishSpacingSlider" min="22" max="64" step="2" value="34" oninput="updateBritishParams()"></div>
+    <div class="grid2">
+      <button class="btn primary" onclick="sendCommand('start')"><i class="fa-solid fa-play"></i> Start</button>
+      <button class="btn" onclick="sendCommand('pause')"><i class="fa-solid fa-pause"></i> Pause</button>
+      <button class="btn" onclick="sendCommand('dock')"><i class="fa-solid fa-house"></i> Dock</button>
+      <button class="btn" onclick="sendCommand('resume')"><i class="fa-solid fa-forward"></i> Resume</button>
+    </div>
+    <h2><i class="fa-solid fa-list"></i> Activity Log</h2>
+    <div class="log" id="log"></div>
+  </aside>
+</div>
+
+<div class="modal" id="saveModal"><div class="dialog">
+  <div class="row"><h2><i class="fa-solid fa-code"></i> Export Konfiguration</h2><button class="btn" onclick="closeSaveModal()">Schließen</button></div>
+  <div class="code" id="jsonPreview"></div>
+  <div class="row"><button class="btn eco" onclick="downloadJSON()"><i class="fa-solid fa-download"></i> JSON herunterladen</button><button class="btn primary" onclick="saveLocal()"><i class="fa-solid fa-check"></i> LocalStorage</button></div>
+</div></div>
+
+<script>
+'use strict';
+const APP_VERSION='Version_korrigiert_1.4.1_british_recovery';
+const M2_PER_PX2=.0035, MOW_RADIUS=18, CELL=10, LOG_LIMIT=60;
+const STUCK_EPS=1.4, STUCK_LIMIT=85, WALL_SAFE=34;
+const BRITISH_EDGE_MARGIN=28, BRITISH_PROGRESS_LIMIT=58, BRITISH_HARD_SKIP=3, BRITISH_ESCAPE_FRAMES=42;
+const canvas=document.getElementById('mapCanvas'), ctx=canvas.getContext('2d');
+const mowCanvas=document.createElement('canvas'), mowCtx=mowCanvas.getContext('2d');
+let W=0,H=0, dpr=1;
+let lawn=[], nazcaShapes=[], obstacles=[], dock={x:80,y:420};
+let navMode='random', mowerState='mowing', sim=true, editing=false, showNazca=true;
+let nazcaShape='hummingbird', nazcaScale=100, nazcaAngle=45, highGrass=85;
+let britishAngle=0, britishSpacing=34, britishWaypoints=[], britishIndex=0, britishProgressCounter=0, britishLastDistance=Infinity, britishSkipEvents=0, britishRecoveryFrames=0;
+let smartTarget=null, avoidedTargets=[], stuckCounter=0, stuckRecovery=0, stuckEvents=0, lastPos={x:0,y:0};
+let battery=84, layer1=0, layer2=0, totalM2=0, dragged=null;
+let mowedCells=new Set();
+let mower={x:300,y:260,angle:45,speed:1.55,blade:45,path:[]};
+function el(id){return document.getElementById(id)} function setText(id,v){const n=el(id); if(n)n.innerText=v}
+function log(msg){const f=el('log'); if(!f)return; const d=document.createElement('div'); d.innerHTML=`<span>${String(msg).replace(/[<>&]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))}</span><span class="time">${new Date().toLocaleTimeString()}</span>`; f.prepend(d); while(f.children.length>LOG_LIMIT)f.removeChild(f.lastChild)}
+function resize(){const wrap=el('canvasWrap'); W=Math.max(520,wrap.clientWidth); H=Math.max(650,wrap.clientHeight); dpr=window.devicePixelRatio||1; canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.width=W+'px'; canvas.style.height=H+'px'; ctx.setTransform(dpr,0,0,dpr,0,0); resizeMow(); initLawnIfNeeded(); calculateMetrics(); calculateNazcaPattern(false); if(navMode==='british')buildBritishPlan(false)}
+function resizeMow(){const old=document.createElement('canvas'); old.width=mowCanvas.width; old.height=mowCanvas.height; if(old.width)old.getContext('2d').drawImage(mowCanvas,0,0); mowCanvas.width=Math.floor(W); mowCanvas.height=Math.floor(H); mowCtx.clearRect(0,0,W,H); if(old.width)mowCtx.drawImage(old,0,0,old.width,old.height,0,0,W,H)}
+function initLawnIfNeeded(){if(lawn.length)return; const px=W*.12, py=H*.14, w=W-px*2, h=H-py*2; lawn=[{x:px,y:py},{x:px+w*.86,y:py},{x:px+w,y:py+h*.35},{x:px+w*.9,y:py+h},{x:px+w*.15,y:py+h*.95},{x:px,y:py+h*.6}]; obstacles=[{cx:px+w*.55,cy:py+h*.4,r:40,label:'Pool'},{cx:px+w*.25,cy:py+h*.65,r:25,label:'Tree'}]; dock={x:px+25,y:py+h*.85}; resetMower(false)}
+function calculateMetrics(){let a=polyArea(lawn); totalM2=+(a*M2_PER_PX2).toFixed(1); const ratio={hummingbird:.22,monkey:.28,spiral:.35,rings:.18}[nazcaShape]||.22; layer2=+(totalM2*ratio).toFixed(1); layer1=+(totalM2-layer2).toFixed(1); setText('layer1Value',layer1.toFixed(1)+' m²'); setText('layer2Value',layer2.toFixed(1)+' m²')}
+function polyArea(p){let a=0; for(let i=0;i<p.length;i++){const j=(i+1)%p.length; a+=p[i].x*p[j].y-p[j].x*p[i].y} return Math.abs(a)/2}
+function bounds(p){return p.reduce((b,q)=>({minX:Math.min(b.minX,q.x),maxX:Math.max(b.maxX,q.x),minY:Math.min(b.minY,q.y),maxY:Math.max(b.maxY,q.y)}),{minX:Infinity,maxX:-Infinity,minY:Infinity,maxY:-Infinity})}
+function centroid(p){let x=0,y=0;p.forEach(q=>{x+=q.x;y+=q.y});return{x:x/p.length,y:y/p.length}}
+function updateParams(){nazcaScale=parseInt(el('scaleSlider').value,10); nazcaAngle=parseInt(el('nazcaAngleSlider').value,10); highGrass=parseInt(el('heightSlider').value,10); setText('scaleText',nazcaScale+'%'); setText('nazcaAngleText',nazcaAngle+'°'); setText('heightText',highGrass+' mm'); calculateNazcaPattern()}
+function updateBritishParams(){britishAngle=parseInt(el('britishAngleSlider').value,10); britishSpacing=parseInt(el('britishSpacingSlider').value,10); setText('britishAngleText',britishAngle+'°'); setText('britishSpacingText',britishSpacing+' px'); if(navMode==='british')buildBritishPlan()}
+function setNazcaShape(s){nazcaShape=s; ['Humming','Monkey','Spiral','Rings'].forEach(n=>el('pat'+n)?.classList.remove('active')); ({hummingbird:'patHumming',monkey:'patMonkey',spiral:'patSpiral',rings:'patRings'}[s]&&el({hummingbird:'patHumming',monkey:'patMonkey',spiral:'patSpiral',rings:'patRings'}[s]).classList.add('active')); calculateMetrics(); calculateNazcaPattern(); if(navMode==='british')buildBritishPlan()}
+function rot(pt,rad,cx,cy){const c=Math.cos(rad),s=Math.sin(rad);return{x:c*pt.x-s*pt.y+cx,y:s*pt.x+c*pt.y+cy}}
+function calculateNazcaPattern(withLog=true){nazcaShapes=[]; const b=bounds(lawn), cx=(b.minX+b.maxX)/2, cy=(b.minY+b.maxY)/2, sc=nazcaScale/100, rad=nazcaAngle*Math.PI/180; if(nazcaShape==='hummingbird'){const raw=[{x:-110,y:0},{x:-40,y:-10},{x:-20,y:-70},{x:0,y:-20},{x:50,y:-80},{x:30,y:0},{x:80,y:40},{x:95,y:70},{x:65,y:75},{x:20,y:35},{x:-30,y:20}]; nazcaShapes.push({type:'poly',name:'Nazca Hummingbird',points:raw.map(p=>rot({x:p.x*sc,y:p.y*sc},rad,cx,cy))})} else if(nazcaShape==='monkey'){const raw=[{x:-50,y:-40},{x:0,y:-70},{x:-10,y:-20},{x:40,y:-60},{x:30,y:20},{x:60,y:60},{x:10,y:75},{x:-30,y:40},{x:-80,y:60},{x:-90,y:10},{x:-65,y:-10}]; nazcaShapes.push({type:'poly',name:'Nazca Monkey',points:raw.map(p=>rot({x:p.x*sc,y:p.y*sc},rad,cx,cy))})} else {const R=Math.min(b.maxX-b.minX,b.maxY-b.minY)*(nazcaShape==='spiral'?.36:.35)*sc; nazcaShapes.push({type:'ring',cx,cy,r1:R,r2:R*.68,name:nazcaShape==='spiral'?'Nazca Spiral':'Concentric Rings'}); if(nazcaShape==='spiral')nazcaShapes.push({type:'ring',cx,cy,r1:R*.52,r2:R*.28})} calculateMetrics(); if(withLog)log('Nazca Linie neu berechnet')}
+function toggleNazcaVisibility(){showNazca=!showNazca; el('btnNazca')?.classList.toggle('active-mode',showNazca); setText('statusText',showNazca?'Layer 2 aktiv':'Nazca ausgeblendet'); if(navMode==='british')buildBritishPlan()}
+function setNavigationMode(mode){navMode=mode; smartTarget=null; stuckCounter=0; stuckRecovery=0; avoidedTargets=[]; ['btnRandom','btnSmart','btnBritish'].forEach(id=>el(id)?.classList.remove('active-mode')); if(mode==='random'){el('btnRandom')?.classList.add('active-mode'); setText('navValue','Random'); setText('statusText',showNazca?'Layer 2 aktiv':'Nazca ausgeblendet'); britishWaypoints=[]; britishIndex=0; resetBritishRecovery()} if(mode==='smart'){el('btnSmart')?.classList.add('active-mode'); setText('navValue','Smart'); smartTarget=findNearestUnmowed(true)} if(mode==='british'){el('btnBritish')?.classList.add('active-mode'); setText('navValue','British'); resetBritishRecovery(); buildBritishPlan()} updateNavColor(); updateBritishMetric(); log((mode==='british'?'British Garden':mode==='smart'?'Smart':'Random')+' Navigation aktiviert')}
+function updateNavColor(){const n=el('navValue'); if(n)n.style.color=navMode==='british'?'var(--blue)':navMode==='smart'?'var(--yellow)':'var(--muted)'}
+function buildBritishPlan(withLog=true){britishWaypoints=[]; britishIndex=0; resetBritishRecovery(); const b=bounds(lawn), c={x:(b.minX+b.maxX)/2,y:(b.minY+b.maxY)/2}, th=britishAngle*Math.PI/180, dir={x:Math.cos(th),y:Math.sin(th)}, norm={x:-Math.sin(th),y:Math.cos(th)}, diag=Math.hypot(b.maxX-b.minX,b.maxY-b.minY)+100; let reverse=false; for(let off=-diag;off<=diag;off+=britishSpacing){let seg=[],segments=[]; for(let t=-diag;t<=diag;t+=Math.max(10,britishSpacing/2)){const p={x:c.x+norm.x*off+dir.x*t,y:c.y+norm.y*off+dir.y*t}; const inside=pointInPoly(p,lawn)&&!hitObstacle(p.x,p.y)&&distBoundary(p.x,p.y)>BRITISH_EDGE_MARGIN&&!(showNazca&&inNazca(p.x,p.y)); if(inside)seg.push(p); else if(seg.length){segments.push(seg);seg=[]}} if(seg.length)segments.push(seg); segments.forEach(s=>{if(s.length<3)return; const a=s[0], z=s[s.length-1]; if(Math.hypot(z.x-a.x,z.y-a.y)<45)return; if(reverse){britishWaypoints.push(z,a)}else{britishWaypoints.push(a,z)} reverse=!reverse})} updateBritishMetric(); if(withLog)log(`British Garden Plan: ${Math.floor(britishWaypoints.length/2)} Linien, Nazca ${showNazca?'ausgespart':'ignoriert'}`)}
+function updateBritishMetric(){setText('britishValue',`${Math.min(britishIndex+1,britishWaypoints.length)}/${britishWaypoints.length}`); const txt=britishRecoveryFrames>0?`Escape ${britishRecoveryFrames}`:(britishSkipEvents?`Skip ${britishSkipEvents}`:'OK'); setText('britishRecoveryValue',txt); const v=el('britishRecoveryValue'); if(v)v.style.color=britishRecoveryFrames>0?'var(--orange)':(britishSkipEvents?'var(--blue)':'var(--green)')}
+function animate(){try{updatePhysics();draw()}catch(e){console.error(e)} requestAnimationFrame(animate)}
+function updatePhysics(){if(!sim||editing||mowerState==='paused'||mowerState==='docked')return; if(mowerState==='returning'){moveToDock();return} if(battery<10&&mowerState==='mowing'){mowerState='returning';log('Batterie niedrig: Auto-Dock')} if(stuckRecovery>0){stuckRecovery--; mower.angle=(mower.angle+3)%360; setStuck('Recovery '+stuckRecovery,'orange')} else if(navMode==='smart')applySmart(); else if(navMode==='british')applyBritish(); const step=mower.speed, rad=mower.angle*Math.PI/180, nx=mower.x+Math.cos(rad)*step, ny=mower.y+Math.sin(rad)*step; if(pointInPoly({x:nx,y:ny},lawn)&&!hitObstacle(nx,ny)){mower.x=nx;mower.y=ny;mower.path.push({x:nx,y:ny}); if(mower.path.length>900)mower.path.shift(); mower.blade=(showNazca&&inNazca(nx,ny))?highGrass:45; markMowed(nx,ny,mower.blade>50); battery=Math.max(0,battery-.002); antiStuck()} else {blockedTurn()} updateTelemetry()}
+function applySmart(){if(!smartTarget||Math.hypot(smartTarget.x-mower.x,smartTarget.y-mower.y)<22||isCellMowed(smartTarget.x,smartTarget.y))smartTarget=findNearestUnmowed(false); if(smartTarget)steer(smartTarget.x,smartTarget.y,.22)}
+function applyBritish(){
+  if(!britishWaypoints.length)buildBritishPlan(false);
+  if(!britishWaypoints.length)return;
+  if(britishRecoveryFrames>0){
+    britishRecoveryFrames--;
+    mower.angle=(mower.angle+3.4)%360;
+    updateBritishMetric();
+    if(britishRecoveryFrames===0)hardSkipBritishWaypoint('escape complete');
+    return;
+  }
+  let t=britishWaypoints[Math.min(britishIndex,britishWaypoints.length-1)];
+  if(!t)return;
+  const wall=distBoundary(t.x,t.y);
+  if(wall<BRITISH_EDGE_MARGIN*.75 || hitObstacle(t.x,t.y) || (showNazca&&inNazca(t.x,t.y))){
+    hardSkipBritishWaypoint('unsafe waypoint');
+    t=britishWaypoints[Math.min(britishIndex,britishWaypoints.length-1)];
+    if(!t)return;
+  }
+  const dist=Math.hypot(t.x-mower.x,t.y-mower.y);
+  if(dist<18||isCellMowed(t.x,t.y)){
+    advanceBritishWaypoint(1,'reached');
+    t=britishWaypoints[Math.min(britishIndex,britishWaypoints.length-1)];
+    if(!t)return;
+  }
+  monitorBritishProgress(t);
+  steer(t.x,t.y,.36);
+}
+
+function resetBritishRecovery(){britishProgressCounter=0; britishLastDistance=Infinity; britishSkipEvents=0; britishRecoveryFrames=0; updateBritishMetric()}
+function advanceBritishWaypoint(step,reason){britishIndex=Math.min(britishIndex+step,britishWaypoints.length-1); britishProgressCounter=0; britishLastDistance=Infinity; updateBritishMetric(); if(reason&&reason!=='reached')log('British Waypoint weiter: '+reason)}
+function hardSkipBritishWaypoint(reason){britishSkipEvents++; advanceBritishWaypoint(BRITISH_HARD_SKIP,reason); setText('statusText','British Recovery: Spur übersprungen')}
+function monitorBritishProgress(target){
+  const dist=Math.hypot(target.x-mower.x,target.y-mower.y);
+  if(dist < britishLastDistance - 0.45){
+    britishProgressCounter=0;
+    britishLastDistance=dist;
+  } else {
+    britishProgressCounter++;
+  }
+  if(britishProgressCounter>BRITISH_PROGRESS_LIMIT){
+    britishProgressCounter=0;
+    britishRecoveryFrames=BRITISH_ESCAPE_FRAMES;
+    britishSkipEvents++;
+    mower.angle=(mower.angle+132+Math.random()*60)%360;
+    setText('statusText','British Recovery: Corner Escape');
+    log('British Recovery: Corner Escape und nächster Waypoint');
+  }
+  updateBritishMetric();
+}
+function steer(x,y,strength){const desired=Math.atan2(y-mower.y,x-mower.x)*180/Math.PI; let d=((desired-mower.angle+540)%360)-180; mower.angle=(mower.angle+d*strength+360)%360}
+function blockedTurn(){stuckCounter+=9; if(navMode==='british'){hardSkipBritishWaypoint('blocked boundary')} if(smartTarget)avoid(smartTarget); if(stuckCounter>STUCK_LIMIT*.75)triggerRecovery('blocked'); else mower.angle=(mower.angle+118+Math.random()*50)%360}
+function antiStuck(){const moved=Math.hypot(mower.x-lastPos.x,mower.y-lastPos.y); if(moved<STUCK_EPS)stuckCounter++; else{stuckCounter=Math.max(0,stuckCounter-3);lastPos={x:mower.x,y:mower.y}} if(stuckCounter>STUCK_LIMIT)triggerRecovery('low movement'); else if(stuckCounter>STUCK_LIMIT*.55)setStuck('Warn '+stuckCounter,'orange'); else setStuck('OK','green')}
+function triggerRecovery(reason){stuckEvents++; stuckCounter=0; stuckRecovery=48; if(smartTarget)avoid(smartTarget); smartTarget=null; mower.angle=(mower.angle+145+Math.random()*55)%360; setStuck('Recovery #'+stuckEvents,'orange'); log('Anti-Stuck Recovery: '+reason)}
+function setStuck(txt,color){setText('stuckValue',txt); const s=el('stuckValue'); if(s)s.style.color=color==='orange'?'var(--orange)':'var(--green)'}
+function avoid(t){avoidedTargets.push({x:t.x,y:t.y}); if(avoidedTargets.length>14)avoidedTargets.shift()}
+function findNearestUnmowed(force){let best=null,score=Infinity, b=bounds(lawn); for(let y=b.minY;y<=b.maxY;y+=CELL*2){for(let x=b.minX;x<=b.maxX;x+=CELL*2){const p={x,y}; if(!pointInPoly(p,lawn)||hitObstacle(x,y)||isCellMowed(x,y))continue; if(showNazca&&inNazca(x,y))continue; const wall=distBoundary(x,y); if(wall<WALL_SAFE*.45)continue; const dist=Math.hypot(x-mower.x,y-mower.y); const wallPenalty=wall<WALL_SAFE?420:Math.max(0,(WALL_SAFE*2-wall)*2); const avoidPenalty=avoidedTargets.some(a=>Math.hypot(a.x-x,a.y-y)<70)?360:0; const sc=dist+wallPenalty+avoidPenalty+(force?Math.random()*80:0); if(sc<score){score=sc;best={x,y}}}} return best}
+function moveToDock(){const dx=dock.x-mower.x,dy=dock.y-mower.y,d=Math.hypot(dx,dy); if(d<5){mower.x=dock.x;mower.y=dock.y;mowerState='docked';sim=false;log('Dock erreicht');return} mower.angle=Math.atan2(dy,dx)*180/Math.PI; mower.x+=Math.cos(mower.angle*Math.PI/180)*2.2; mower.y+=Math.sin(mower.angle*Math.PI/180)*2.2; updateTelemetry()}
+function markMowed(x,y,high){const r=high?MOW_RADIUS+2:MOW_RADIUS; mowCtx.beginPath(); mowCtx.arc(x,y,r,0,Math.PI*2); mowCtx.fillStyle=high?'rgba(234,179,8,.30)':'rgba(34,197,94,.44)'; mowCtx.fill(); for(let cy=Math.floor((y-r)/CELL);cy<=Math.floor((y+r)/CELL);cy++){for(let cx=Math.floor((x-r)/CELL);cx<=Math.floor((x+r)/CELL);cx++){const px=cx*CELL+CELL/2,py=cy*CELL+CELL/2; if(Math.hypot(px-x,py-y)<=r&&pointInPoly({x:px,y:py},lawn))mowedCells.add(cx+':'+cy)}} updateCoverage()}
+function clearMowedMap(){mowCtx.clearRect(0,0,W,H);mowedCells.clear();mower.path=[];updateCoverage();if(navMode==='british')buildBritishPlan(false);log('Gemähte Fläche gelöscht')}
+function updateCoverage(){const lawnPx=totalM2/M2_PER_PX2, mowed=mowedCells.size*CELL*CELL; setText('coverageValue',(lawnPx?Math.min(100,mowed/lawnPx*100):0).toFixed(1)+'%')}
+function isCellMowed(x,y){return mowedCells.has(Math.floor(x/CELL)+':'+Math.floor(y/CELL))}
+function inNazca(x,y){if(!showNazca)return false; return nazcaShapes.some(s=>s.type==='poly'?pointInPoly({x,y},s.points):(()=>{const d=Math.hypot(x-s.cx,y-s.cy);return d<=s.r1&&d>=s.r2})())}
+function pointInPoly(pt,poly){let inside=false; for(let i=0,j=poly.length-1;i<poly.length;j=i++){const xi=poly[i].x,yi=poly[i].y,xj=poly[j].x,yj=poly[j].y,den=yj-yi; if(Math.abs(den)<Number.EPSILON)continue; const inter=((yi>pt.y)!==(yj>pt.y))&&(pt.x<((xj-xi)*(pt.y-yi))/den+xi); if(inter)inside=!inside} return inside}
+function hitObstacle(x,y){return obstacles.some(o=>Math.hypot(x-o.cx,y-o.cy)<o.r+12)}
+function distBoundary(x,y){let m=Infinity; for(let i=0;i<lawn.length;i++){const a=lawn[i],b=lawn[(i+1)%lawn.length]; m=Math.min(m,distSeg(x,y,a.x,a.y,b.x,b.y))} return m}
+function distSeg(px,py,ax,ay,bx,by){const dx=bx-ax,dy=by-ay; if(!dx&&!dy)return Math.hypot(px-ax,py-ay); const t=Math.max(0,Math.min(1,((px-ax)*dx+(py-ay)*dy)/(dx*dx+dy*dy))); return Math.hypot(px-(ax+t*dx),py-(ay+t*dy))}
+function draw(){ctx.clearRect(0,0,W,H); drawLawn(); drawNazca(); drawMowed(); drawBritish(); drawPath(); drawObstacles(); drawDock(); drawMower(); if(editing)drawVertices(); if(navMode==='smart')drawSmart()}
+function drawLawn(){ctx.beginPath();ctx.moveTo(lawn[0].x,lawn[0].y);lawn.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.closePath();ctx.fillStyle='#0f381c';ctx.fill();ctx.strokeStyle=editing?'#8b5cf6':'#10b981';ctx.lineWidth=editing?3:2;ctx.stroke()}
+function drawNazca(){if(!showNazca)return; ctx.save();clipLawn(); nazcaShapes.forEach(s=>{ctx.beginPath(); if(s.type==='poly'){ctx.moveTo(s.points[0].x,s.points[0].y);s.points.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.closePath()}else{ctx.arc(s.cx,s.cy,s.r1,0,Math.PI*2);ctx.arc(s.cx,s.cy,s.r2,0,Math.PI*2,true)} ctx.fillStyle='rgba(234,179,8,.34)';ctx.fill();ctx.strokeStyle='#eab308';ctx.lineWidth=2;ctx.stroke()}); ctx.restore()}
+function drawMowed(){ctx.save();clipLawn();ctx.drawImage(mowCanvas,0,0);ctx.restore()}
+function drawBritish(){if(navMode!=='british'||britishWaypoints.length<2)return; ctx.save();ctx.strokeStyle='rgba(96,165,250,.38)';ctx.lineWidth=1.5;ctx.setLineDash([8,8]); for(let i=0;i<britishWaypoints.length-1;i+=2){const a=britishWaypoints[i],b=britishWaypoints[i+1]; ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()} ctx.setLineDash([]); const t=britishWaypoints[britishIndex]; if(t){ctx.beginPath();ctx.arc(t.x,t.y,13,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,.35)';ctx.fill();ctx.strokeStyle='#60a5fa';ctx.stroke();ctx.fillStyle='#bfdbfe';ctx.font='bold 11px Inter';ctx.textAlign='center';ctx.fillText('British Ziel',t.x,t.y-18)} ctx.restore()}
+function drawPath(){if(mower.path.length<2)return; ctx.strokeStyle='rgba(34,197,94,.55)';ctx.lineWidth=10;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(mower.path[0].x,mower.path[0].y);mower.path.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.stroke()}
+function drawObstacles(){obstacles.forEach(o=>{ctx.beginPath();ctx.arc(o.cx,o.cy,o.r,0,Math.PI*2);ctx.fillStyle='rgba(239,68,68,.25)';ctx.fill();ctx.strokeStyle='#ef4444';ctx.stroke();ctx.fillStyle='#fff';ctx.font='11px Inter';ctx.textAlign='center';ctx.fillText(o.label,o.cx,o.cy+4)})}
+function drawDock(){ctx.beginPath();ctx.arc(dock.x,dock.y,14,0,Math.PI*2);ctx.fillStyle='#3b82f6';ctx.fill();ctx.strokeStyle='#fff';ctx.stroke();ctx.fillStyle='#fff';ctx.font='10px Inter';ctx.textAlign='center';ctx.fillText('Dock',dock.x,dock.y+28)}
+function drawMower(){ctx.save();ctx.translate(mower.x,mower.y);ctx.rotate(mower.angle*Math.PI/180);ctx.fillStyle=mower.blade>50?'rgba(234,179,8,.55)':'rgba(16,185,129,.5)';ctx.beginPath();ctx.arc(0,0,17,0,Math.PI*2);ctx.fill();ctx.fillStyle='#1e293b';ctx.strokeStyle=mower.blade>50?'#eab308':'#10b981';ctx.lineWidth=2;roundRect(-13,-10,26,20,5);ctx.fill();ctx.stroke();ctx.fillStyle=mower.blade>50?'#eab308':'#10b981';ctx.beginPath();ctx.moveTo(13,0);ctx.lineTo(4,-6);ctx.lineTo(4,6);ctx.closePath();ctx.fill();ctx.restore()}
+function drawSmart(){if(!smartTarget)return; ctx.save();ctx.beginPath();ctx.arc(smartTarget.x,smartTarget.y,13,0,Math.PI*2);ctx.fillStyle='rgba(59,130,246,.3)';ctx.fill();ctx.strokeStyle='#60a5fa';ctx.stroke();ctx.setLineDash([6,6]);ctx.beginPath();ctx.moveTo(mower.x,mower.y);ctx.lineTo(smartTarget.x,smartTarget.y);ctx.stroke();ctx.restore()}
+function drawVertices(){lawn.forEach((p,i)=>{ctx.beginPath();ctx.arc(p.x,p.y,dragged===i?9:7,0,Math.PI*2);ctx.fillStyle=dragged===i?'#f59e0b':'#8b5cf6';ctx.fill();ctx.strokeStyle='#fff';ctx.stroke()})}
+function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath()}
+function clipLawn(){ctx.beginPath();ctx.moveTo(lawn[0].x,lawn[0].y);lawn.slice(1).forEach(p=>ctx.lineTo(p.x,p.y));ctx.closePath();ctx.clip()}
+function updateTelemetry(){setText('batteryValue',Math.round(battery)+'%');setText('headingValue',Math.floor((mower.angle+360)%360)+'°');setText('coordText',(52.3676+(mower.y-H/2)*.00001).toFixed(4)+'° N, '+(4.9041+(mower.x-W/2)*.00001).toFixed(4)+'° E')}
+function resetMower(withLog=true){const c=centroid(lawn);mower.x=c.x;mower.y=c.y;mower.angle=45;mower.path=[{x:mower.x,y:mower.y}];lastPos={x:mower.x,y:mower.y};stuckCounter=0;stuckRecovery=0;if(withLog)log('Mäher zurückgesetzt')}
+function sendCommand(c){if(c==='start'||c==='resume'){mowerState='mowing';sim=true} if(c==='pause'){mowerState='paused';sim=false} if(c==='dock'){mowerState='returning';sim=true} log('Command: '+c)}
+function toggleSimulation(){sim=!sim;setText('simText',sim?'Pause':'Start');const i=el('simIcon');if(i)i.className=sim?'fa-solid fa-pause':'fa-solid fa-play'}
+function toggleEditSurfaceMode(){editing=!editing;el('btnEdit')?.classList.toggle('active-mode',editing);log(editing?'Editor aktiv':'Editor aus')}
+function pos(e){const r=canvas.getBoundingClientRect(),cx=e.touches?e.touches[0].clientX:e.clientX,cy=e.touches?e.touches[0].clientY:e.clientY;return{x:cx-r.left,y:cy-r.top}}
+function startDrag(e){if(!editing)return;const p=pos(e);dragged=null;lawn.forEach((v,i)=>{if(Math.hypot(v.x-p.x,v.y-p.y)<14)dragged=i});if(dragged!==null)e.preventDefault()}
+function moveDrag(e){if(!editing||dragged===null)return;const p=pos(e);lawn[dragged].x=Math.max(10,Math.min(W-10,p.x));lawn[dragged].y=Math.max(10,Math.min(H-10,p.y));calculateMetrics();calculateNazcaPattern(false);if(navMode==='british')buildBritishPlan(false);e.preventDefault()}
+function endDrag(){dragged=null}
+function config(){return{app_version:APP_VERSION,navigation_mode:navMode,nazca:{visible:showNazca,shape:nazcaShape,scale_pct:nazcaScale,rotation_deg:nazcaAngle,high_grass_mm:highGrass},british_garden:{angle_deg:britishAngle,spacing_px:britishSpacing,waypoint_index:britishIndex,waypoints_total:britishWaypoints.length,nazca_lines_preserved:showNazca,recovery_skips:britishSkipEvents,recovery_frames:britishRecoveryFrames,edge_margin_px:BRITISH_EDGE_MARGIN},anti_stuck:{stuck_counter:stuckCounter,recovery_counter:stuckRecovery,events:stuckEvents},coverage_cells:mowedCells.size,layer1_m2:layer1,layer2_m2:layer2,lawn_boundary:lawn}}
+function openSaveModal(){setText('jsonPreview',JSON.stringify(config(),null,2));el('saveModal').classList.add('active')} function closeSaveModal(){el('saveModal').classList.remove('active')} function saveLocal(){localStorage.setItem('navimow_v14_british_garden',JSON.stringify(config()));log('LocalStorage gespeichert');closeSaveModal()}
+function downloadJSON(){const blob=new Blob([JSON.stringify(config(),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='navimow_'+APP_VERSION+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);log('JSON heruntergeladen')}
+window.addEventListener('resize',resize);canvas.addEventListener('mousedown',startDrag);canvas.addEventListener('mousemove',moveDrag);window.addEventListener('mouseup',endDrag);canvas.addEventListener('touchstart',startDrag,{passive:false});canvas.addEventListener('touchmove',moveDrag,{passive:false});window.addEventListener('touchend',endDrag);
+window.onload=()=>{resize();updateParams();updateBritishParams();setNavigationMode('random');log('Navimow Studio '+APP_VERSION+' initialisiert');animate()}
+</script>
+</body>
+</html>
